@@ -56,10 +56,10 @@ const TALENT_INTENTS: HelpIntent[] = [
     href: "/dashboard/workspaces",
   },
   {
-    id: "wallet_withdraw",
-    keywords: ["withdraw", "wallet", "earnings", "bank", "payout"],
+    id: "payout_account",
+    keywords: ["earnings", "bank", "payout", "payment"],
     answer:
-      "Go to Wallet to set up your bank account, verify it, and request a withdrawal once you have available earnings. Completed and approved project payments flow into your wallet history there.",
+      "Go to Payments to set up and verify your bank account. Once a client approves final delivery, payment is sent directly to that verified account.",
     href: "/dashboard/wallet",
   },
   {
@@ -108,10 +108,10 @@ const CLIENT_INTENTS: HelpIntent[] = [
     href: "/dashboard/workspaces",
   },
   {
-    id: "fund_wallet",
-    keywords: ["wallet", "fund", "payment", "deposit", "escrow"],
+    id: "project_payment",
+    keywords: ["fund", "payment", "project payment"],
     answer:
-      "Use Wallet to see funded workspace amounts, transaction history, and payment-related actions. Funding and release events are also reflected inside the relevant workspace.",
+      "Use Payments to review project payment history. Pay for a project from its workspace once the agreement is ready; delivery approval then starts the talent payment process.",
     href: "/dashboard/wallet",
   },
   {

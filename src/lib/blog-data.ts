@@ -356,16 +356,16 @@ export const POSTS: Post[] = [
      POST 8
   ─────────────────────────────────────────────── */
   {
-    slug: "escrow-payment-protection-ngos-freelancers",
-    title: "Why Escrow Changes Everything for NGO-Freelancer Relationships",
-    subtitle: "Payment disputes are the most common source of conflict in the Nigerian freelance sector. Escrow doesn't just solve the problem - it changes the relationship.",
+    slug: "clear-project-payments-ngos-freelancers",
+    title: "Why Clear Project Payments Matter for NGO-Freelancer Relationships",
+    subtitle: "Payment disputes are a common source of conflict in the Nigerian freelance sector. Clear project terms and approval steps build confidence for both parties.",
     category: "Platform",
     categoryColor: "#10B981",
     readTime: "6 min read",
     date: "December 5, 2024",
     author: { name: "Titi Adewale", role: "Partner Success Lead, changeworker", initials: "TA", color: "#EC4899" },
-    excerpt: "In our survey of Nigerian freelance professionals, 67% reported having been underpaid or not paid at all for at least one client engagement in the past two years. Escrow is the structural fix.",
-    tags: ["escrow","payments","protection","trust","platform"],
+    excerpt: "In our survey of Nigerian freelance professionals, 67% reported having been underpaid or not paid at all for at least one client engagement in the past two years. Clear agreements and approval steps help prevent this.",
+    tags: ["payments","protection","trust","platform"],
     sections: [
       { type: "p", content: "In our survey of Nigerian freelance professionals working in the social sector, 67% reported having been underpaid or not paid at all for at least one client engagement in the past two years. The number rises to 81% for freelancers with less than three years of experience." },
       { type: "p", content: "This is not a Nigerian problem specifically - it's a freelance economy problem everywhere. But in a sector where margins are already thin, where organizations are under-resourced, and where the power imbalance between 'the organization doing important work' and 'the consultant' is regularly weaponized, the problem is acute." },
@@ -375,12 +375,12 @@ export const POSTS: Post[] = [
       { type: "p", content: "Phase 3: The payment friction. When the final invoice arrives, the organization raises concerns about the deliverable - often concerns that weren't raised during the project - as grounds for delaying or reducing payment." },
       { type: "p", content: "Phase 4: The freelancer's dilemma. Pursue the full amount and damage the relationship (and potentially their reputation in a small, networked sector). Or accept less and absorb the loss." },
       { type: "quote", content: "I spent six weeks on a major proposal for an organization I genuinely believed in. When I invoiced, they told me they'd 'used a different approach in the end' and offered me 40% of the agreed fee. I took it, because I couldn't afford not to.", author: "Anonymous grant writer, changeworker community" },
-      { type: "h2", content: "What escrow actually does" },
-      { type: "p", content: "Escrow changes the power structure of the transaction. When an organization funds escrow at the start of an engagement, three things happen:" },
+      { type: "h2", content: "What a clear payment process does" },
+      { type: "p", content: "A clear payment process changes the working relationship. When an organization confirms project payment before work starts, three things happen:" },
       { type: "list", items: [
-        "The freelancer has assurance: The money exists, it's committed, and it cannot be withheld arbitrarily.",
-        "The organization has assurance: The funds don't transfer until they're satisfied with the work, so there's no risk of paying for something that isn't delivered.",
-        "Both parties have incentive to resolve issues quickly: Disputed funds sitting in escrow are bad for everyone - organizations need to move on, freelancers need to be paid.",
+        "The freelancer has assurance: project payment is confirmed before work begins.",
+        "The organization has assurance: final delivery is reviewed against the agreed scope before payment is sent.",
+        "Both parties have incentive to resolve issues quickly: a dispute pauses final approval while the case is reviewed.",
       ]},
       { type: "stat-row", stats: [
         { value: "0%", label: "Successful projects with unpaid invoices on changeworker", color: "#10B981" },
@@ -388,9 +388,9 @@ export const POSTS: Post[] = [
         { value: "96%", label: "Disputes resolved without escalation to arbitration", color: "#6366F1" },
       ]},
       { type: "h2", content: "The less obvious benefit: trust-building" },
-      { type: "p", content: "The most important thing escrow does isn't solve disputes. It's prevent them. When both parties know that payment is structurally guaranteed (for delivered work) and protected (for organizations from non-delivery), the entire character of the working relationship changes." },
+      { type: "p", content: "The most important benefit of a clear payment process is preventing avoidable disputes. When both parties know the agreement, delivery review, and payment steps, the entire character of the working relationship changes." },
       { type: "p", content: "Freelancers who know they'll be paid become more confident in pushing back on scope drift, setting clear boundaries, and delivering their best work rather than their most politically safe work. Organizations who know their funds are protected become more focused on clear briefs and constructive feedback rather than building up a case for later payment reduction." },
-      { type: "callout", content: "The best client-freelancer relationships we've seen on changeworker begin with organizations who said 'I was worried about this before - having the escrow made me comfortable enough to take a chance on a new-to-me freelancer.' That confidence is what good platform design should create.", color: "#10B981" },
+      { type: "callout", content: "The best client-freelancer relationships we've seen on changeworker begin with organizations that agree the scope, delivery checkpoints, and payment terms early. That confidence is what good platform design should create.", color: "#10B981" },
     ],
   },
 

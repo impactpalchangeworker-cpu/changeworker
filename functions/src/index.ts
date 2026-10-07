@@ -810,46 +810,8 @@ export const autoApprovePayouts = onSchedule("every 5 minutes", async () => {
 })
 
 export const releasePayout = onCall(async (request) => {
-  const uid = requireAuth(request)
-  const wsId = String(request.data?.wsId || "")
-  const payoutId = String(request.data?.payoutId || "")
-  
-  console.log("[releasePayout] Request:", { uid, wsId, payoutId })
-  
-  if (!wsId || !payoutId) {
-    console.error("[releasePayout] Missing required params:", { wsId, payoutId })
-    throw new HttpsError("invalid-argument", "wsId and payoutId required")
-  }
-
-  const wsSnap = await db.doc(`workspaces/${wsId}`).get()
-  if (!wsSnap.exists) {
-    console.error("[releasePayout] Workspace not found:", wsId)
-    throw new HttpsError("not-found", "Workspace not found")
-  }
-  
-  const ws = wsSnap.data() as any
-  console.log("[releasePayout] Workspace data:", { talentUid: ws?.talentUid, clientUid: ws?.clientUid, paymentAmount: ws?.payment?.amount })
-  
-  if (uid !== ws.clientUid) {
-    console.error("[releasePayout] Client mismatch:", { uid, clientUid: ws.clientUid })
-    throw new HttpsError("permission-denied", "Client only")
-  }
-
-  try {
-    console.log("[releasePayout] Starting payout processing...")
-    await processPayout(wsId, payoutId, uid)
-    console.log("[releasePayout] Payout processed successfully")
-    return { ok: true }
-  } catch (e: any) {
-    console.error("[releasePayout] processPayout failed with full error:", {
-      errorMessage: e?.message || "No message",
-      errorCode: e?.code || "No code",
-      errorString: String(e),
-      errorStack: e?.stack || "No stack",
-      errorDetails: JSON.stringify(e, null, 2)
-    })
-    throw new HttpsError("internal", `Failed to release payout: ${e?.message || String(e) || "Unknown error"}`)
-  }
+  requireAuth(request)
+  throw new HttpsError("failed-precondition", "Legacy payout release is disabled. Payments are processed by the current provider workflow.")
 })
 
 // ------------------------------
@@ -1160,26 +1122,13 @@ export const reconcileWalletBalances = onSchedule("every day 02:00", async () =>
 })
 
 // ------------------------------
-// Scheduled: reconcile Paystack payments missed by the webhook.
+// Scheduled: legacy payment reconciliation is disabled during migration.
 // The first check happens five minutes after initiation. A second and final
 // verification is attempted before the payment is escalated for admin review.
-// Only confirmed Paystack success records are ever credited.
+// The function remains temporarily deployed as a harmless no-op until undeployed.
 // ------------------------------
-async function verifyPaystackTransaction(reference: string) {
-  const secret = process.env.PAYSTACK_SECRET_KEY
-  if (!secret) throw new Error("PAYSTACK_SECRET_KEY is not configured")
-
-  const response = await fetch(`https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`, {
-    headers: { Authorization: `Bearer ${secret}` },
-  })
-  const payload = await response.json().catch(() => null) as any
-  const success = response.ok && payload?.status === true && payload?.data?.status === "success"
-
-  return {
-    paid: success,
-    amount: success ? Number(payload?.data?.amount || 0) / 100 : 0,
-    payload,
-  }
+async function verifyLegacyTransaction(_reference: string): Promise<{ paid: boolean; amount: number; payload: any }> {
+  throw new Error("Legacy payment verification is disabled")
 }
 
 async function recordPaymentReconciliationCase(data: Record<string, unknown>) {
@@ -1216,14 +1165,14 @@ async function settleReconciledWalletTopup(ref: admin.firestore.DocumentReferenc
     }, { merge: true })
     tx.set(txRef, {
       status: "completed",
-      meta: { reference, confirmedBy: "paystack_reconciliation" },
+      meta: { reference, confirmedBy: "legacy_reconciliation" },
       completedAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     }, { merge: true })
     tx.set(ref, {
       status: "funded",
       paidAt: admin.firestore.FieldValue.serverTimestamp(),
-      confirmedBy: "paystack_reconciliation",
+      confirmedBy: "legacy_reconciliation",
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     }, { merge: true })
     return { settled: true, amount: expectedAmount }
@@ -1242,14 +1191,14 @@ async function settleReconciledWorkspacePayment(paymentRef: admin.firestore.Docu
     tx.set(paymentRef, {
       status: "funded",
       paidAt: admin.firestore.FieldValue.serverTimestamp(),
-      fundedBy: "paystack_reconciliation",
+      fundedBy: "legacy_reconciliation",
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     }, { merge: true })
     tx.set(wsRef, {
       payment: {
         status: "funded",
         fundedAt: admin.firestore.FieldValue.serverTimestamp(),
-        fundedBy: "paystack_reconciliation",
+        fundedBy: "legacy_reconciliation",
         reference,
         amount,
         escrow: true,
@@ -1262,14 +1211,17 @@ async function settleReconciledWorkspacePayment(paymentRef: admin.firestore.Docu
       reference,
       amount,
       currency: "NGN",
-      fundedBy: "paystack_reconciliation",
+      fundedBy: "legacy_reconciliation",
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     })
     return { settled: true }
   })
 }
 
-export const reconcilePaystackPayments = onSchedule("every 5 minutes", async () => {
+export const reconcileLegacyPayments = onSchedule("every 24 hours", async () => {
+  // Intentionally disabled during the provider migration. Kept temporarily only
+  // to make any deployed legacy scheduler harmless until it is undeployed.
+  return
   const now = admin.firestore.Timestamp.now()
   const [topups, payments] = await Promise.all([
     db.collectionGroup("topups")
@@ -1296,22 +1248,22 @@ export const reconcilePaystackPayments = onSchedule("every 5 minutes", async () 
     const attempt = attempts + 1
 
     try {
-      const verified = await verifyPaystackTransaction(reference)
+      const verified = await verifyLegacyTransaction(reference)
       if (verified.paid) {
         if (pending.ref.parent.id === "topups") {
           const uid = pending.ref.parent.parent?.id
           if (!uid) throw new Error("Wallet owner is missing")
-          await settleReconciledWalletTopup(pending.ref, reference, verified.amount, uid)
+          await settleReconciledWalletTopup(pending.ref, reference, verified.amount, String(uid))
         } else {
           const wsRef = pending.ref.parent.parent
           if (!wsRef) throw new Error("Workspace owner is missing")
-          await settleReconciledWorkspacePayment(pending.ref, reference, verified.amount, wsRef)
+          await settleReconciledWorkspacePayment(pending.ref, reference, verified.amount, wsRef as admin.firestore.DocumentReference)
         }
         await recordPaymentReconciliationCase({ caseId, reference, amount: verified.amount, kind: pending.ref.parent.id === "topups" ? "wallet_topup" : "workspace_funding", ownerId: pending.ref.parent.parent?.id || "", workspaceId: pending.ref.parent.id === "payments" ? pending.ref.parent.parent?.id || "" : "", status: "resolved", attempts: attempt, resolvedAt: admin.firestore.FieldValue.serverTimestamp() })
       } else {
         const status = attempt >= 2 ? "needs_manual_review" : "retrying"
         await pending.ref.set({ reconciliationAttempts: attempt, lastReconciliationAt: admin.firestore.FieldValue.serverTimestamp(), nextReconciliationAt: admin.firestore.Timestamp.fromMillis(Date.now() + 5 * 60 * 1000), updatedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true })
-        await recordPaymentReconciliationCase({ caseId, reference, amount: Number(data?.amount || 0), kind: pending.ref.parent.id === "topups" ? "wallet_topup" : "workspace_funding", ownerId: pending.ref.parent.parent?.id || "", workspaceId: pending.ref.parent.id === "payments" ? pending.ref.parent.parent?.id || "" : "", status, attempts: attempt, lastPaystackStatus: verified.payload?.data?.status || "unknown" })
+        await recordPaymentReconciliationCase({ caseId, reference, amount: Number(data?.amount || 0), kind: pending.ref.parent.id === "topups" ? "wallet_topup" : "workspace_funding", ownerId: pending.ref.parent.parent?.id || "", workspaceId: pending.ref.parent.id === "payments" ? pending.ref.parent.parent?.id || "" : "", status, attempts: attempt, lastProviderStatus: "disabled" })
       }
     } catch (error: any) {
       const status = attempt >= 2 ? "needs_manual_review" : "retrying"

@@ -802,22 +802,22 @@ export default function DashboardPage() {
             ₦{walletTotal.toLocaleString()}
           </div>
           <div className="text-xs font-semibold text-gray-500">
-            {role === "client" ? "Total funded" : "Total earned"}
+            {role === "client" ? "Project payments" : "Project earnings"}
           </div>
         </div>
       </div>
 
-      <div className="mt-3 font-extrabold">Wallet</div>
+      <div className="mt-3 font-extrabold">Payments</div>
         <div className="text-sm text-gray-600 mt-1">
           {role === "client"
-          ? "Track wallet balance alongside direct and wallet-funded workspace payments."
-          : "Your earnings will show here after completed gigs."}
+          ? "Track confirmed payments for your projects."
+          : "Approved project payments are sent to your verified bank account."}
         </div>
 
       {role === "client" ? (
         <div className="mt-3 grid grid-cols-2 gap-2 border-t pt-3 text-xs">
-          <div><div className="font-semibold text-gray-500">Wallet balance</div><div className="mt-1 font-extrabold text-gray-900">₦{clientWalletBalance.toLocaleString()}</div></div>
-          <div><div className="font-semibold text-gray-500">Total funded</div><div className="mt-1 font-extrabold text-gray-900">₦{walletTotal.toLocaleString()}</div></div>
+          <div><div className="font-semibold text-gray-500">Latest project</div><div className="mt-1 font-extrabold text-gray-900">₦{clientWalletBalance.toLocaleString()}</div></div>
+          <div><div className="font-semibold text-gray-500">Total paid</div><div className="mt-1 font-extrabold text-gray-900">₦{walletTotal.toLocaleString()}</div></div>
         </div>
       ) : null}
 
@@ -826,7 +826,7 @@ export default function DashboardPage() {
           href="/dashboard/wallet"
           className="text-sm font-extrabold text-[var(--primary)] hover:underline"
         >
-          View wallet →
+          View payments →
         </Link>
       </div>
     </CardContent>

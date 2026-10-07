@@ -244,7 +244,7 @@ export default function AdminDisputesPage() {
                   <DialogTitle>Resolve dispute</DialogTitle>
                   <AdminResolveDisputePanel
                     disputeId={selectedDispute.id}
-                    escrowAmount={Number(selectedDispute.workspace?.payment?.amount || selectedDispute.workspace?.escrowAmount || 0)}
+                    projectAmount={Number(selectedDispute.workspace?.payment?.amount || selectedDispute.workspace?.escrowAmount || 0)}
                     defaultNotes={selectedDispute.adminNotes || ""}
                     onResolved={async () => {
                       await fetchDisputes()
@@ -321,7 +321,7 @@ function DisputeCard({
           {dispute.workspace?.escrowAmount ? (
             <div className="flex items-center gap-1">
               <DollarSign className="h-4 w-4" />
-              ₦{Number(dispute.workspace.escrowAmount).toLocaleString()} escrow
+              ₦{Number(dispute.workspace.escrowAmount).toLocaleString()} project payment
             </div>
           ) : null}
         </div>

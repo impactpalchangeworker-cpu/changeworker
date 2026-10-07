@@ -82,9 +82,9 @@ const CTA_IMG = "/images/6.jpeg?auto=compress&cs=tinysrgb&w=1200"
 
 const FEATURES = [
   { icon: FiZap, title: "Instant matching", body: "Post a gig and our engine immediately surfaces the most relevant vetted talent. No waiting, no manual delay.", num: "01" },
-  { icon: FiShield, title: "Escrow on every gig", body: "Funds secured before work begins. Payment releases only when you approve the final deliverables.", num: "02" },
+  { icon: FiShield, title: "Clear project payments", body: "Clients fund the workspace before work begins. Talent receive work earnings after final deliverables are approved. We do not hold payments in wallets.", num: "02" },
   { icon: FiCheckCircle, title: "Verified talent only", body: "Every freelancer is personally vetted - identity, skills, and sector track record confirmed before appearing.", num: "03" },
-  { icon: TbBuildingCommunity, title: "Nigeria-native", body: "Paystack integration, Naira pricing, and a team that deeply understands Nigerian civil society.", num: "04" },
+  { icon: TbBuildingCommunity, title: "Nigeria-native", body: "Naira pricing, local payment processing, and a team that deeply understands Nigerian civil society.", num: "04" },
   { icon: FiRepeat, title: "Save & rehire", body: "Bookmark talent you love and return to them for future gigs without starting a new search.", num: "05" },
   { icon: FiHeart, title: "Fair pay enforced", body: "We set minimum rate floors. 'For the mission' is never a substitute for fair professional pay.", num: "06" },
 ]
@@ -98,7 +98,7 @@ const PROFILES = [
 
 const FAQS = [
   { q: "How are freelancers vetted?", a: "Graduates of our Skills For Impact skills development program and verified users sign up as talents. Every profile is manually reviewed before going live." },
-  { q: "What does the 10% commission cover?", a: "The fee supports our Skills For Impact training program which equips youths with skills for the social impact sector - and covers escrow, matching, and platform support." },
+  { q: "What does the 10% commission cover?", a: "The fee supports our Skills For Impact training program which equips youths with skills for the social impact sector - and covers payment processing, matching, and platform support." },
   { q: "How quickly will I get matched?", a: "Matching starts the instant a gig is posted. Clients see a curated shortlist of relevant talent within seconds of publishing." },
   { q: "What if I'm not satisfied?", a: "Workspaces support milestone review, final approval, and dispute creation so both sides have a documented process if work needs clarification or resolution." },
   { q: "Can I hire the same freelancer again?", a: "Yes. You can save talent profiles and return to them for new gigs without starting a new search." },
@@ -109,14 +109,14 @@ const STEPS_ORG = [
   { icon: FiEdit3, num: "01", label: "Post a gig", desc: "Describe the work, set your budget, tag relevant SDGs - done in 5 minutes." },
   { icon: FiZap, num: "02", label: "Get matched", desc: "Instant matching surfaces vetted talent the moment your gig goes live." },
   { icon: FiUsers, num: "03", label: "Choose & agree", desc: "Review profiles, discuss scope, agree on terms inside the platform." },
-  { icon: FiCheckCircle, num: "04", label: "Deliver & pay", desc: "Work delivered through the workspace. Approve to release escrow funds." },
+  { icon: FiCheckCircle, num: "04", label: "Deliver & complete", desc: "Work is delivered through the workspace. Approve final deliverables and the talent receives their work earnings." },
 ]
 
 const STEPS_FL = [
   { icon: FiLayers, num: "01", label: "Build your profile", desc: "Showcase skills, SDG focus, sector experience, and your portfolio." },
   { icon: FiBell, num: "02", label: "Get auto-matched", desc: "Relevant gigs surface to you the moment they're posted. No bidding." },
-  { icon: FiMessageSquare, num: "03", label: "Discuss & start", desc: "Client funds escrow. You begin work with payment secured upfront." },
-  { icon: FiTrendingUp, num: "04", label: "Deliver & earn", desc: "Submit work, get approved, receive payout. Build your reputation." },
+  { icon: FiMessageSquare, num: "03", label: "Discuss & start", desc: "The client funds the workspace. You begin work with a clear payment process in place." },
+  { icon: FiTrendingUp, num: "04", label: "Deliver & earn", desc: "Submit work, get approved, receive your work earnings. Build your reputation." },
 ]
 
 /* ═══ PRELOADER ══════════════════════════════════════════════ */
@@ -554,7 +554,7 @@ Pay for what you need. Get work that counts.                </p>
               </div>
 
               <div className={`flex flex-wrap gap-5 ${heroRef.inView ? "up" : "opacity-0"}`} style={{ "--d": ".48s" } as React.CSSProperties}>
-                {["Verified profiles", "Instant matching", "Naira pricing", "Escrow protected"].map(t => (
+                {["Verified profiles", "Instant matching", "Naira pricing", "Clear project payments"].map(t => (
                   <div key={t} className="flex items-center gap-2">
                     <FiCheckCircle size={12} style={{ color: "#F97316" }} />
                     <span className="text-white text-xs" style={{ fontFamily: "'DM Sans',sans-serif" }}>{t}</span>
@@ -712,8 +712,8 @@ Pay for what you need. Get work that counts.                </p>
                 <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center mb-4">
                   <FiShield size={18} style={{ color: "#F97316" }} />
                 </div>
-                <h3 className="font-bold text-[#111] text-sm mb-2" style={{ fontFamily: "'Plus Jakarta Sans',sans-serif" }}>Escrow on every gig</h3>
-                <p className="bd text-sm">Funds secured before work begins. Payment releases only when you approve the deliverables.</p>
+                <h3 className="font-bold text-[#111] text-sm mb-2" style={{ fontFamily: "'Plus Jakarta Sans',sans-serif" }}>Clear project payments</h3>
+                <p className="bd text-sm">Clients fund the workspace before work begins. Talent receive work earnings after final deliverables are approved. changeworker does not hold payments in wallets for organizations or talent; payments are direct.</p>
               </div>
 
               <div className={`card p-6 ${featRef.inView ? "up" : "opacity-0"}`} style={{ "--d": ".22s" } as React.CSSProperties}>
@@ -729,7 +729,7 @@ Pay for what you need. Get work that counts.                </p>
                   <TbBuildingCommunity size={18} style={{ color: "#F97316" }} />
                 </div>
                 <h3 className="font-bold text-[#111] text-sm mb-2" style={{ fontFamily: "'Plus Jakarta Sans',sans-serif" }}>Nigeria-native</h3>
-                <p className="bd text-sm">Paystack integration, Naira pricing, and a team that deeply understands Nigerian civil society.</p>
+                <p className="bd text-sm">Naira pricing, local payment processing, and a team that deeply understands Nigerian civil society.</p>
               </div>
 
               <div className={`card p-6 md:col-span-2 flex items-center gap-6 ${featRef.inView ? "up" : "opacity-0"}`} style={{ "--d": ".36s", background: "#FFF7ED", borderColor: "#FED7AA" } as React.CSSProperties}>

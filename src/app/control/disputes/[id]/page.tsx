@@ -135,7 +135,7 @@ export default async function DisputeResolvePage({
         stats={[
           { label: "Status", value: dispute.status || "open" },
           { label: "Stage", value: dispute.stage || "N/A" },
-          { label: "Escrow", value: formatAdminMoney(escrowAmount) },
+          { label: "Project payment", value: formatAdminMoney(escrowAmount) },
           { label: "Evidence", value: dispute.evidence.length },
         ]}
       />
@@ -388,7 +388,7 @@ export default async function DisputeResolvePage({
                 </div>
               </div>
               <div>
-                <div className="font-semibold text-gray-500">Escrow amount</div>
+                <div className="font-semibold text-gray-500">Project payment</div>
                 <div className="mt-1 text-gray-900">{formatAdminMoney(escrowAmount)}</div>
               </div>
               {dispute.payments.length ? (
@@ -408,7 +408,7 @@ export default async function DisputeResolvePage({
               ) : null}
               {dispute.escrowLedger.length ? (
                 <div className="space-y-2">
-                  <div className="font-semibold text-gray-500">Escrow ledger</div>
+                  <div className="font-semibold text-gray-500">Payment activity</div>
                   {dispute.escrowLedger.map((entry: any) => (
                     <div key={entry.id} className="rounded-2xl border bg-[var(--secondary)] px-3 py-3">
                       <div className="font-semibold capitalize text-gray-900">
@@ -442,12 +442,12 @@ export default async function DisputeResolvePage({
               {canResolve ? (
                 <AdminResolveDisputePanel
                   disputeId={dispute.id}
-                  escrowAmount={escrowAmount}
+                  projectAmount={escrowAmount}
                   defaultNotes={dispute.adminNotes || ""}
                 />
               ) : (
                 <div className="text-sm leading-7 text-gray-600">
-                  This dispute has already been resolved. The settlement outcome is recorded in the case summary and escrow ledger.
+                  This dispute has already been resolved. The outcome is recorded in the case summary and payment activity.
                 </div>
               )}
             </CardContent>

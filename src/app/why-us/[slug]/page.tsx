@@ -22,7 +22,7 @@ function contentFor(slug: string) {
       sections: [
         {
           title: "Climate Research Delivered on Time",
-          body: "An environmental nonprofit hired a Climate Researcher and ESG Reporting Specialist to prepare a donor-ready sustainability report. Funds were secured in escrow, milestones tracked in the workspace, and final deliverables approved within two weeks.",
+          body: "An environmental nonprofit hired a Climate Researcher and ESG Reporting Specialist to prepare a donor-ready sustainability report. Project funding, milestones, and final deliverables were tracked in the workspace and approved within two weeks.",
           badge: "Climate Action",
           badgeColor: "#3F7E44",
         },
@@ -40,7 +40,7 @@ function contentFor(slug: string) {
         },
         {
           title: "Grant Writing at Scale",
-          body: "Three connected NGOs working on education access pooled their budgets to hire a Grant Writer for a joint USAID proposal. changeworker's multi-party escrow meant all three organizations were protected while the talent was fully secured.",
+          body: "Three connected NGOs working on education access pooled their budgets to hire a Grant Writer for a joint USAID proposal. changeworker's structured agreement and project-payment process helped all three organizations and the talent stay aligned.",
           badge: "Quality Education",
           badgeColor: "#C5192D",
         },
@@ -73,19 +73,19 @@ function contentFor(slug: string) {
           badgeColor: "#F97316",
         },
         {
-          title: "3. Agree Scope & Fund Escrow",
-          body: "Discuss expectations in chat. Finalize deliverables, timeline, and payment terms inside the workspace agreement. Once agreed, fund the escrow. Your money is secured - it cannot be accessed until you approve the final work.",
+          title: "3. Agree Scope & Fund the Project",
+          body: "Discuss expectations in chat. Finalize deliverables, timeline, and payment terms inside the workspace agreement. Once agreed, fund the project. Talent payment follows approval of the final work.",
           badge: "Protected",
           badgeColor: "#10B981",
         },
         {
           title: "4. Review & Release",
-          body: "Talent submits final work inside the workspace. Review everything before approving. Once you mark the gig complete, payment releases from escrow to the talent's wallet. Our 10% platform fee is deducted from the talent's payout - you pay exactly what was agreed, nothing more.",
+          body: "Talent submits final work inside the workspace. Review everything before approving. Once you mark the gig complete, talent payment is processed. Our 10% platform fee is deducted from the talent's payout - you pay exactly what was agreed, nothing more.",
           badge: "Final step",
           badgeColor: "#EC4899",
         },
       ],
-      highlight: "No upfront freelancer risk. No client payment risk. Just structured delivery with escrow protection on every single gig.",
+      highlight: "No upfront freelancer risk. No client payment risk. Just structured delivery and clear project payments on every single gig.",
       cta: { label: "Post your first gig", href: "/hire" },
       ctaSecondary: { label: "See how it works", href: "/how-it-works" },
     }
@@ -154,13 +154,13 @@ function contentFor(slug: string) {
         },
         {
           title: "3. Discuss, Agree & Start",
-          body: "The client reviews your profile and reaches out. Discuss scope, timeline, and questions through the platform's workspace. Once agreed, the client funds escrow and you begin. You never start work without payment secured.",
+          body: "The client reviews your profile and reaches out. Discuss scope, timeline, and questions through the platform's workspace. Once agreed, the client funds the project and you begin. You start work with a clear payment process in place.",
           badge: "Protected",
           badgeColor: "#6366F1",
         },
         {
           title: "4. Deliver, Get Paid, Build Reputation",
-          body: "Submit your work through the workspace. Once the client approves, payment releases from escrow. Our 10% platform fee is deducted from your payout - you agreed on a rate and that's what you see minus the fee. Every completed gig builds your rating and review history.",
+          body: "Submit your work through the workspace. Once the client approves, your payment is processed. Our 10% platform fee is deducted from your payout - you agreed on a rate and that's what you see minus the fee. Every completed gig builds your rating and review history.",
           badge: "Rewarded",
           badgeColor: "#10B981",
         },
@@ -199,8 +199,8 @@ function contentFor(slug: string) {
         badgeColor: "#3F7E44",
       },
       {
-        title: "Payment, Escrow & Fee Transparency",
-        body: "A clear explanation of how gig funding works, how escrow protects both parties, how the 10% platform fee is calculated (deducted from talent payout), and how and when withdrawals to bank accounts are processed.",
+        title: "Project Payments & Fee Transparency",
+        body: "A clear explanation of how project funding works, how payment follows approved delivery, how the 10% platform fee is calculated (deducted from talent payout), and how and when withdrawals to bank accounts are processed.",
         badge: "Financial",
         badgeColor: "#6366F1",
       },

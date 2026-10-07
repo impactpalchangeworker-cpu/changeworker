@@ -213,7 +213,7 @@ export default async function AdminWalletDetailPage({ params, searchParams }: { 
                   <div className="mt-1 text-gray-900">{wallet.bank.accountNumber}</div>
                 </div>
                 <Badge className="bg-emerald-50 text-emerald-700 hover:bg-emerald-50">
-                  Verified on Paystack
+                  Verified for direct payment
                 </Badge>
               </>
             ) : (

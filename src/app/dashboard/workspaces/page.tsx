@@ -279,7 +279,7 @@ export default function WorkspacesPage() {
                                 </div>
 
                                 <div className="mt-2 text-sm text-gray-600 line-clamp-2">
-                                  Payment escrow + milestones will appear here once enabled.
+                                  Project payment details and milestones will appear here once enabled.
                                 </div>
                               </div>
 

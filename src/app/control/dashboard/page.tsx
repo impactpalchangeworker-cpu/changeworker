@@ -57,8 +57,7 @@ const quickLinks: QuickLink[] = [
   { title: "Track workspaces", desc: "Follow active deliveries, approvals, and payout states.", href: "/control/workspaces", icon: FolderKanban },
   { title: "Read messages", desc: "Open thread-level conversation context for support and disputes.", href: "/control/messages", icon: Bell },
   { title: "Resolve disputes", desc: "Handle platform escalations tied to workspace history.", href: "/control/disputes", icon: AlertTriangle },
-  { title: "Review transactions", desc: "Track funding, payout release, and platform fee revenue.", href: "/control/transactions", icon: Wallet },
-  { title: "Open wallets", desc: "Inspect client escrow exposure and talent balances.", href: "/control/wallets", icon: Wallet },
+  { title: "Review transactions", desc: "Track project payments, talent payouts, and platform fee revenue.", href: "/control/transactions", icon: Wallet },
   { title: "Check reviews", desc: "Read peer reviews and reputation signals.", href: "/control/reviews", icon: BarChart3 },
   { title: "Analytics", desc: "Follow users, gigs, workspaces, volume, and revenue.", href: "/control/analytics", icon: BarChart3 },
   { title: "Notifications", desc: "Check admin alerts and linked operational records.", href: "/control/notifications", icon: Bell },
@@ -289,12 +288,6 @@ export default function AdminDashboardPage() {
                   detail: "Workspace payout requests waiting for review or release.",
                 },
                 {
-                  href: "/control/wallets",
-                  label: "Withdrawal queue",
-                  value: withdrawalQueue,
-                  detail: "Talent withdrawals waiting on transfer processing or admin attention.",
-                },
-                {
                   href: "/control/support",
                   label: "Unread support",
                   value: supportUnread,
@@ -415,12 +408,6 @@ export default function AdminDashboardPage() {
                   label: "Messages",
                   detail: "Open thread-level conversation records.",
                   icon: Bell,
-                },
-                {
-                  href: "/control/wallets",
-                  label: "Wallets",
-                  detail: "Inspect client escrow and talent balances.",
-                  icon: Wallet,
                 },
               ].map((item) => {
                 const Icon = item.icon

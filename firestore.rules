@@ -289,6 +289,14 @@ service cloud.firestore {
       }
     }
 
+    // ===== DIRECT PAYMENT PROFILES =====
+    // Bank details are written only by trusted server-side payment flows. The
+    // account owner and admins may read the saved verification result.
+    match /payoutProfiles/{uid} {
+      allow read: if isMe(uid) || isAdmin();
+      allow write: if false;
+    }
+
     // ===== REVIEWS =====
     match /reviews/{reviewId} {
       allow read: if isAdmin() || resource.data.isPublic == true
@@ -370,6 +378,16 @@ service cloud.firestore {
       }
 
       match /payments/{paymentId} {
+        allow read: if isAdmin() || isWorkspaceParticipant(workspaceId);
+        allow write: if false;
+      }
+
+      match /payouts/{payoutId} {
+        allow read: if isAdmin() || isWorkspaceParticipant(workspaceId);
+        allow write: if false;
+      }
+
+      match /refunds/{refundId} {
         allow read: if isAdmin() || isWorkspaceParticipant(workspaceId);
         allow write: if false;
       }

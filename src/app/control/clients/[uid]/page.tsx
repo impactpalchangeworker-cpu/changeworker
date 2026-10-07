@@ -456,6 +456,14 @@ export default function AdminClientDetailPage() {
               </Card>
 
               <Card className="rounded-2xl">
+                <CardHeader><CardTitle className="text-lg font-extrabold">Project payments</CardTitle></CardHeader>
+                <CardContent className="text-sm text-gray-700">
+                  <p>Client payments are made directly from each workspace after the agreement is ready. There is no stored platform balance for this account.</p>
+                  <p className="mt-3 text-xs text-gray-500">Final delivery approval starts the talent payment process. The standard platform fee is 10% of the agreed project amount.</p>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl">
                 <CardHeader>
                   <CardTitle className="text-lg font-extrabold">Marketplace records</CardTitle>
                 </CardHeader>

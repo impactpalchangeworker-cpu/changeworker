@@ -322,7 +322,7 @@ export default function ContactPage() {
               </h2>
               <p className={`text-white/50 text-base leading-relaxed mb-8 max-w-xl ${faqRef.inView?"up":"opacity-0"}`}
                 style={{ fontFamily:"'DM Sans',sans-serif", "--d":".2s" } as React.CSSProperties}>
-                changeworker is currently focused on Nigeria - Naira pricing, Paystack payments, and a team that understands Nigerian civil society. If you want to use the platform from another market, write to us and tell us what you have in mind.
+                changeworker is currently focused on Nigeria - Naira pricing, local payment processing, and a team that understands Nigerian civil society. If you want to use the platform from another market, write to us and tell us what you have in mind.
               </p>
               <div className={`flex flex-wrap gap-4 ${faqRef.inView?"up":"opacity-0"}`} style={{"--d":".28s"} as React.CSSProperties}>
                 {[

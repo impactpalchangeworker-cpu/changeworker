@@ -75,7 +75,7 @@ const DATA_TYPES = [
   { category:"Contact",       color:"#6366F1", icon:FiMail,        items:["Email address","Phone number","Physical address","State/city of residence"] },
   { category:"Professional",  color:"#10B981", icon:FiFileText,    items:["Work experience & history","Educational qualifications","Skills & certifications","Portfolio samples","Freelancer rates & availability"] },
   { category:"Organisational",color:"#EC4899", icon:FiUsers,       items:["Organisation name and type","CAC registration number","Website & social profiles","Mission statement","Contact information"] },
-  { category:"Transaction",   color:"#F59E0B", icon:FiDatabase,    items:["Project postings","Hire decisions","Payment amounts","Escrow records","Commission invoices"] },
+  { category:"Transaction",   color:"#F59E0B", icon:FiDatabase,    items:["Project postings","Hire decisions","Payment amounts","Project payment records","Commission invoices"] },
   { category:"Technical",     color:"#3B82F6", icon:FiServer,      items:["IP address","Browser type & version","Operating system","Cookie identifiers","Session data"] },
   { category:"Communications",color:"#8B5CF6", icon:FiSmartphone,  items:["In-platform messages","Support tickets","Email with changeworker","Feedback & review text"] },
   { category:"Usage",         color:"#14B8A6", icon:FiEye,         items:["Search queries","Pages viewed","Feature interactions","Error logs","General diagnostics"] },
@@ -97,7 +97,7 @@ const COOKIES = [
   { name:"cw_csrf",       type:"Essential",  duration:"Session",  purpose:"Prevents cross-site request forgery" },
   { name:"cw_prefs",      type:"Functional", duration:"1 year",   purpose:"Stores display preferences" },
   { name:"cw_onboarding", type:"Functional", duration:"30 days",  purpose:"Tracks onboarding steps completed" },
-  { name:"pstk_*",        type:"Payment",    duration:"Session",  purpose:"Paystack payment processing" },
+  { name:"Payment provider cookies", type:"Payment", duration:"Session", purpose:"Secure payment processing" },
   { name:"cw_usage",      type:"Performance",duration:"90 days",  purpose:"Performance diagnostics" },
 ]
 
@@ -345,7 +345,7 @@ export default function PrivacyPage() {
               <SH>Automated Collection</SH>
               <P>Log data, device data, cookie data, and usage patterns collected automatically when you use the platform (see Section 6 for full cookie details).</P>
               <SH>Third-Party Sources</SH>
-              <P>Transaction data from Paystack, general usage diagnostics, and reviews submitted about your account by other users.</P>
+              <P>Transaction data from our payment provider, general usage diagnostics, and reviews submitted about your account by other users.</P>
               <Div/>
 
               {/* 4 */}
@@ -376,7 +376,7 @@ export default function PrivacyPage() {
 
               {/* 5 */}
               <SHead id="sharing" num="05" icon={FiUsers} title="Sharing & Disclosure"/>
-              <P><strong>We do not sell, rent, or trade your personal data.</strong> We share data only in limited circumstances: with other platform users (profile information necessary for matching), with service providers (Paystack for payments, Firebase for infrastructure) under strict data processing agreements, for legal obligations, and in the event of a business transfer.</P>
+              <P><strong>We do not sell, rent, or trade your personal data.</strong> We share data only in limited circumstances: with other platform users (profile information necessary for matching), with service providers for payment processing and infrastructure under strict data processing agreements, for legal obligations, and in the event of a business transfer.</P>
               <Hl color="indigo">In the event of a merger or acquisition, we will notify you and provide an opportunity to delete your account before any transfer of data.</Hl>
               <Div/>
 

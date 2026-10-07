@@ -35,19 +35,19 @@ const IMGS = {
 const CLIENT_STEPS = [
   { num:"01", icon: FiEdit3,       title: "Post your gig",       body: "Write a brief with scope, budget, SDG focus, and skills needed. Takes about 5 minutes. The clearer your brief, the better the talent you attract." },
   { num:"02", icon: FiZap,         title: "Get matched instantly",body: "The moment your gig goes live our engine surfaces the most relevant vetted talent. Browse profiles and incoming proposals - no waiting period." },
-  { num:"03", icon: FiMessageSquare,title:"Discuss & agree",      body: "Message talent, align on expectations, and finalise scope inside the workspace. Fund escrow once you're both ready to begin." },
-  { num:"04", icon: FiCheckCircle, title: "Review & release",     body: "Talent submits deliverables through the workspace. Review, request changes if needed, approve when satisfied, and release payment." },
+  { num:"03", icon: FiMessageSquare,title:"Discuss & agree",      body: "Message talent, align on expectations, and finalise scope inside the workspace. Fund the workspace once you're both ready to begin." },
+  { num:"04", icon: FiCheckCircle, title: "Review & complete",    body: "Talent submits deliverables through the workspace. Review, request changes if needed, and approve when satisfied. The talent then receives their work earnings." },
 ]
 
 const TALENT_STEPS = [
   { num:"01", icon: FiLayers,      title: "Build your profile",   body: "Add your skills, sector experience, SDG focus areas, rates, and portfolio. A complete profile is the most important thing you can do to get matched." },
   { num:"02", icon: FiBell,        title: "Get auto-matched",     body: "When a relevant gig is posted, you appear in the client's shortlist automatically. No bidding wars, no cold pitching. You focus on the work." },
-  { num:"03", icon: FiUsers,       title: "Discuss & start",      body: "The client reaches out, you discuss scope, and once agreed the client funds escrow. You never start work without payment already secured." },
-  { num:"04", icon: FiTrendingUp,  title: "Deliver & earn",       body: "Submit work through the workspace. Once the client approves, payment releases from escrow. Every completed gig builds your rating and reputation." },
+  { num:"03", icon: FiUsers,       title: "Discuss & start",      body: "The client reaches out, you discuss scope, and once agreed the client funds the workspace. You start work with a clear payment process in place." },
+  { num:"04", icon: FiTrendingUp,  title: "Deliver & earn",       body: "Submit work through the workspace. Once the client approves, you receive your work earnings. Every completed gig builds your rating and reputation." },
 ]
 
 const TRUST_POINTS = [
-  { icon: FiLock,    title: "Escrow protection",     body: "Funds are held until deliverables are approved. Neither party is exposed - organizations don't pay for bad work and talent don't work without payment secured." },
+  { icon: FiLock,    title: "Project payment clarity", body: "changeworker does not hold payments in wallets for organizations or talent. Payments are direct, while workspace records help both parties stay aligned." },
   { icon: FiShield,  title: "Workspace records",     body: "All communication, submissions, milestones, and approvals are documented inside the platform workspace. A clear record protects both sides." },
   { icon: FiTarget,  title: "Dispute support",       body: "If something goes wrong, a dispute can be raised directly from the workspace. The full project history is attached - no he-said-she-said." },
   { icon: TbHeartHandshake, title: "Review & reputation", body: "After every gig both parties leave a review. Ratings are verified, permanent, and publicly visible. Reputation compounds over time for both sides." },
@@ -139,7 +139,7 @@ export default function HowItWorksPage() {
               </h1>
               <p className={`text-white text-lg leading-relaxed mb-10 max-w-lg ${heroRef.inView?"up":"opacity-0"}`}
                 style={{ fontFamily:"'DM Sans',sans-serif", "--d":".26s" } as React.CSSProperties}>
-                From finding the right fit to getting paid fairly - five steps for organizations and five for talent, built on escrow, instant matching, and SDG alignment.
+                From finding the right fit to getting paid fairly - five steps for organizations and five for talent, built on project funding, instant matching, and SDG alignment.
               </p>
 
               {/* audience toggle */}
@@ -155,7 +155,7 @@ export default function HowItWorksPage() {
               </div>
 
               <div className={`flex flex-wrap gap-4 ${heroRef.inView?"up":"opacity-0"}`} style={{"--d":".46s"} as React.CSSProperties}>
-                {[{I:FiZap,t:"Instant matching"},{I:FiShield,t:"Escrow protection"},{I:FiCheckCircle,t:"Verified talent"}].map(({I,t})=>(
+                {[{I:FiZap,t:"Instant matching"},{I:FiShield,t:"Clear project payments"},{I:FiCheckCircle,t:"Verified talent"}].map(({I,t})=>(
                   <div key={t} className="flex items-center gap-2">
                     <I size={12} style={{ color:"#F97316" }} />
                     <span className="text-white/50 text-xs" style={{ fontFamily:"'DM Sans',sans-serif" }}>{t}</span>
@@ -253,7 +253,7 @@ export default function HowItWorksPage() {
               </h2>
               <p className={`text-white/50 text-base leading-relaxed max-w-md ${trustRef.inView?"up":"opacity-0"}`}
                 style={{ fontFamily:"'DM Sans',sans-serif", "--d":".2s" } as React.CSSProperties}>
-                Escrow, verified profiles, workspace records, and dispute tools aren't extras - they're the foundation. Every gig on changeworker is structurally protected for both parties.
+                Clear project payments, verified profiles, workspace records, and dispute tools aren't extras - they're the foundation. Every gig on changeworker is structured for both parties.
               </p>
             </div>
             <div className={`relative rounded-2xl overflow-hidden h-64 lg:h-80 ${trustRef.inView?"si":"opacity-0"}`} style={{"--d":".12s"} as React.CSSProperties}>
@@ -262,7 +262,7 @@ export default function HowItWorksPage() {
               <div className="absolute bottom-4 left-4 right-4">
                 <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-3">
                   <FiShield size={14} style={{ color:"#F97316", flexShrink:0 }} />
-                  <span className="text-white/80 text-xs" style={{ fontFamily:"'DM Sans',sans-serif" }}>Every gig protected by escrow · 0% unpaid invoices on platform</span>
+                  <span className="text-white/80 text-xs" style={{ fontFamily:"'DM Sans',sans-serif" }}>Clear project funding · 0% unpaid invoices on platform</span>
                 </div>
               </div>
             </div>
@@ -381,11 +381,11 @@ export default function HowItWorksPage() {
               </h2>
               <p className={`text-white/50 text-base leading-relaxed mb-8 ${feeRef.inView?"up":"opacity-0"}`}
                 style={{ fontFamily:"'DM Sans',sans-serif", "--d":".2s" } as React.CSSProperties}>
-                A flat 10% platform fee deducted from the talent's payout. Organizations pay exactly what they agreed - no markups, no hidden charges. The fee covers escrow, matching, vetting, and dispute support.
+                A flat 10% platform fee deducted from the talent's work earnings. Organizations pay exactly what they agreed - no markups, no hidden charges. The fee covers payment processing, matching, vetting, and dispute support.
               </p>
               <div className={`space-y-3 ${feeRef.inView?"up":"opacity-0"}`} style={{"--d":".3s"} as React.CSSProperties}>
                 {[
-                  { t:"10% from talent payout only", sub:"Organizations pay exactly the agreed rate - nothing more." },
+                  { t:"10% from talent work earnings", sub:"Organizations pay exactly the agreed rate - nothing more." },
                   { t:"Free to register",            sub:"No subscription fee for either side." },
                   { t:"Fee funds Skills For Impact", sub:"Our 10% supports professional development in the sector." },
                 ].map(({ t, sub }) => (

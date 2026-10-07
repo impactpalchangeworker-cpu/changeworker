@@ -1230,49 +1230,22 @@ const unsubSession = onSnapshot(
   const agreementPdfUrl = ws?.agreementPdfUrl || agreement?.pdfUrl || null
   const canOpenChat = !!ws?.threadId
 
-  // ---------- Payment: Paystack funding ----------
-  const startPaystackFunding = async () => {
+  // ---------- Payment: direct project payment ----------
+  const startProjectPayment = async () => {
     if (!id || !user?.uid || !ws || !isClient) return
     try {
       const { auth: firebaseAuth } = await import("@/lib/firebase")
       const currentUser = firebaseAuth.currentUser
       if (!currentUser) throw new Error("Not signed in")
       const token = await currentUser.getIdToken()
-      const resp = await fetch("/api/paystack/initialize", {
+      const resp = await fetch("/api/monnify/initialize", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ wsId: id }),
       })
       const json = await resp.json()
       if (!resp.ok) throw new Error(json?.error || "Failed to initialize payment")
-      window.location.href = json.authorizationUrl
-    } catch (e: any) {
-      console.error(e)
-      toast.error(e?.message || "Payment failed")
-    }
-  }
-
-  const startWalletFunding = async () => {
-    if (!id || !user?.uid || !ws || !isClient) return
-    try {
-      const { auth: firebaseAuth } = await import("@/lib/firebase")
-      const currentUser = firebaseAuth.currentUser
-      if (!currentUser) throw new Error("Not signed in")
-      const token = await currentUser.getIdToken()
-      const resp = await fetch("/api/wallets/fund-workspace", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ wsId: id }),
-      })
-      const json = await resp.json()
-      if (!resp.ok) {
-        if (json?.error === "Insufficient wallet balance") {
-          throw new Error(`Insufficient wallet balance. Top up at least NGN ${Number(json?.required || 0).toLocaleString()}.`)
-        }
-        throw new Error(json?.error || "Failed to fund workspace from wallet")
-      }
-      toast.success("Workspace funded from wallet balance")
-      window.location.reload()
+      window.location.href = json.checkoutUrl
     } catch (e: any) {
       console.error(e)
       toast.error(e?.message || "Payment failed")
@@ -1476,26 +1449,18 @@ const unsubSession = onSnapshot(
   const clientApproveFinalWork = async () => {
     if (!id || !user?.uid || !isClient || !finalWork) return
     try {
-      // Approve final work
-      await updateDoc(doc(db, "workspaces", id, "finalWork", "submission"), {
-        status: "approved",
-        review: {
-          decision: "approved",
-          reason: "Approved by client.",
-          at: serverTimestamp(),
-          byUid: user.uid,
-        },
-        downloadableAfter: "approved",
-        updatedAt: serverTimestamp(),
+      const token = await user.getIdToken()
+      const review = await fetch("/api/workspaces/review-final-work", {
+        method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }, body: JSON.stringify({ workspaceId: id, decision: "approved" }),
       })
-      
-      // Mark workspace as completed
-      await updateDoc(doc(db, "workspaces", id), {
-        status: "completed",
-        updatedAt: serverTimestamp(),
+      const reviewResult = await review.json()
+      if (!review.ok) throw new Error(reviewResult?.error || "Unable to approve final work")
+      const payout = await fetch("/api/monnify/payout", {
+        method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }, body: JSON.stringify({ workspaceId: id }),
       })
-      
-      toast.success("Final work approved - workspace completed")
+      const payoutResult = await payout.json()
+      if (!payout.ok) throw new Error(payoutResult?.error || "Final work was approved, but payment could not be started")
+      toast.success(payoutResult.status === "paid" ? "Final work approved and payment sent" : "Final work approved and payment is processing")
       setReviewingFinalWork(false)
     } catch (e: any) {
       console.error(e)
@@ -1862,8 +1827,8 @@ const unsubSession = onSnapshot(
 
   const raiseDispute = async () => {
     if (!id || !user?.uid || !ws) return
-    if (ws.status !== "completed") {
-      toast.error("Workspace must be completed to raise a dispute")
+    if (!["active", "in_progress", "completed"].includes(String(ws.status || ""))) {
+      toast.error("A dispute can be raised once project work has started")
       return
     }
     if (ws.disputeId) {
@@ -2038,7 +2003,7 @@ const unsubSession = onSnapshot(
                         <div className="rounded-2xl border bg-white p-4">
                           <div className="font-extrabold inline-flex items-center gap-2">
                             <CreditCard size={16} className="text-[var(--primary)]" />
-                            Escrow funding
+                            Project funding
                           </div>
 
                           <div className="mt-2 flex items-center justify-between">
@@ -2047,25 +2012,16 @@ const unsubSession = onSnapshot(
                           </div>
 
                           <div className="mt-2 text-xs text-gray-600">
-                            Funds are held in escrow for both client and talent safety. Release happens after final delivery approval.
+                            Fund the agreed project before work begins. Talent payment is processed after final delivery approval.
                           </div>
 
                           <button
-                            onClick={startPaystackFunding}
+                            onClick={startProjectPayment}
                             className="mt-3 w-full rounded-2xl bg-[var(--primary)] text-white font-extrabold py-2 hover:opacity-90 transition inline-flex items-center justify-center gap-2"
                             disabled={isFunded}
                           >
                             <Wallet size={16} />
-                            {isFunded ? "Workspace funded" : "Fund workspace on Paystack"}
-                          </button>
-
-                          <button
-                            onClick={startWalletFunding}
-                            className="mt-2 w-full rounded-2xl border border-orange-200 bg-orange-50 text-[var(--primary)] font-extrabold py-2 hover:bg-orange-100 transition inline-flex items-center justify-center gap-2"
-                            disabled={isFunded}
-                          >
-                            <Wallet size={16} />
-                            {isFunded ? "Wallet funding complete" : "Fund from wallet balance"}
+                            {isFunded ? "Project payment confirmed" : "Pay for this project"}
                           </button>
 
                           <div className="mt-3 pt-3 border-t space-y-2 text-xs">
@@ -2874,19 +2830,19 @@ const unsubSession = onSnapshot(
 
                   {/* PAYOUT SECTION - Moved after Final Work */}
                   {/* Talent payout request */}
-                  {isTalent && (
+                  {isTalent && latestPayout && (
                     <Card className="rounded-2xl">
                       <CardContent className="pt-6">
                         <div className="rounded-2xl border bg-white p-4">
                           <div className="font-extrabold inline-flex items-center gap-2">
                             <Wallet size={16} className="text-[var(--primary)]" />
-                            Payout
+                            Payment status
                           </div>
 
                           <div className="mt-2 text-sm text-gray-600">
                             {latestPayout?.status === "paid" 
-                              ? "Payout has been released to your wallet." 
-                              : "Request payout after submitting final work. Client has 24h to review, else auto-approve."}
+                              ? "Payment has been sent to your verified bank account."
+                              : "Final delivery was approved and payment is being processed."}
                           </div>
 
                           <div className="mt-3 flex items-center justify-between text-sm">
@@ -2897,22 +2853,12 @@ const unsubSession = onSnapshot(
                           {latestPayout?.status === "paid" ? (
                             <div className="mt-3 w-full rounded-2xl bg-green-100 text-green-900 font-extrabold py-2 inline-flex items-center justify-center gap-2">
                               <CheckCircle2 size={16} />
-                              Payout Released
+                              Payment sent
                             </div>
                           ) : (
-                            <button
-                              onClick={requestPayout}
-                              disabled={!canRequestPayout || (payType === "hourly" && sessionStatus !== "running")}
-                              className="mt-3 w-full rounded-2xl bg-[var(--primary)] text-white font-extrabold py-2 disabled:opacity-60 inline-flex items-center justify-center gap-2"
-                            >
+                            <div className="mt-3 w-full rounded-2xl bg-blue-50 text-blue-900 font-extrabold py-2 inline-flex items-center justify-center gap-2">
                               <Wallet size={16} />
-                              Request payout
-                            </button>
-                          )}
-
-                          {!canRequestPayout && latestPayout?.status !== "paid" && (
-                            <div className="text-xs text-gray-500 font-semibold mt-2">
-                              Submit final work before requesting payout.
+                              Payment processing
                             </div>
                           )}
 
@@ -2971,7 +2917,7 @@ const unsubSession = onSnapshot(
                   )}
 
                   {/* Client payout review + declined history */}
-                  {isClient && latestPayout && (
+                  {false && isClient && latestPayout && (
                     <Card className="rounded-2xl">
                       <CardContent className="pt-6">
                         {latestPayout.status === "requested" ? (
@@ -3113,7 +3059,7 @@ const unsubSession = onSnapshot(
                   </Card>
 
                   {/* Dispute Section */}
-                  {ws?.status === "completed" && (
+                  {["active", "in_progress", "completed"].includes(String(ws?.status || "")) && (
                     <Card className="rounded-2xl">
                       <CardHeader>
                         <CardTitle className="text-base font-extrabold">Dispute Resolution</CardTitle>
@@ -3135,7 +3081,7 @@ const unsubSession = onSnapshot(
                           <div className="rounded-2xl border bg-white p-4">
                             <div className="font-extrabold mb-2">Raise a Dispute</div>
                             <div className="text-sm text-gray-600 mb-3">
-                              If you're not satisfied with the work or payment, you can raise a formal dispute.
+                              Either party can raise a formal dispute during the project. This pauses final approval and payment while the case is reviewed.
                             </div>
                             <Button
                               variant="outline"

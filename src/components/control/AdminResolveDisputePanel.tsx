@@ -17,14 +17,14 @@ import {
 
 type Props = {
   disputeId: string
-  escrowAmount: number
+  projectAmount: number
   defaultNotes?: string
   onResolved?: () => void | Promise<void>
 }
 
 export default function AdminResolveDisputePanel({
   disputeId,
-  escrowAmount,
+  projectAmount,
   defaultNotes = "",
   onResolved,
 }: Props) {
@@ -36,7 +36,7 @@ export default function AdminResolveDisputePanel({
   const [resolving, setResolving] = useState(false)
 
   const parsedAmount = amount ? Number(amount) : 0
-  const talentPortion = Math.max(0, escrowAmount - parsedAmount)
+  const talentPortion = Math.max(0, projectAmount - parsedAmount)
   const settlementPreview =
     action === "release_talent"
       ? "Settlement will be marked as released to talent."
@@ -62,8 +62,8 @@ export default function AdminResolveDisputePanel({
     const needsAmount = ["release_talent", "refund_client", "partial_refund"].includes(action)
     const amountValue = needsAmount ? Number(amount || 0) : undefined
 
-    if (needsAmount && (!amountValue || amountValue <= 0 || amountValue > escrowAmount)) {
-      toast.error("Enter a valid amount within the escrow amount")
+    if (needsAmount && (!amountValue || amountValue <= 0 || amountValue > projectAmount)) {
+      toast.error("Enter a valid amount within the project payment")
       return
     }
 
@@ -106,8 +106,8 @@ export default function AdminResolveDisputePanel({
             <SelectValue placeholder="Select resolution action" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="release_talent">Release funds to talent</SelectItem>
-            <SelectItem value="refund_client">Refund funds to client</SelectItem>
+            <SelectItem value="release_talent">Send payment to talent</SelectItem>
+            <SelectItem value="refund_client">Refund client payment</SelectItem>
             <SelectItem value="partial_refund">Split between client and talent</SelectItem>
             <SelectItem value="close_case">Close case only</SelectItem>
           </SelectContent>
@@ -123,14 +123,14 @@ export default function AdminResolveDisputePanel({
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            placeholder={`Max: ₦${escrowAmount.toLocaleString()}`}
-            max={escrowAmount}
+            placeholder={`Max: ₦${projectAmount.toLocaleString()}`}
+            max={projectAmount}
             min={0}
             step={1}
             required
           />
           <p className="mt-1 text-xs text-gray-500">
-            Escrow amount: ₦{escrowAmount.toLocaleString()}
+            Project payment: ₦{projectAmount.toLocaleString()}
             {action === "partial_refund" ? ` | Talent gross: ₦${talentPortion.toLocaleString()}` : ""}
           </p>
         </div>

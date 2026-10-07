@@ -122,7 +122,7 @@ export default function ClientKycForm() {
                   Verification is required
                 </div>
                 <div className="mt-1">
-                  Organizations must verify before posting high-value gigs and using escrow.
+                  Organizations must verify before posting high-value gigs and funding projects.
                   Your organization profile is what talent will see.
                 </div>
               </div>

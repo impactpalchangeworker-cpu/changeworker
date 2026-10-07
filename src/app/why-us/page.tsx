@@ -35,11 +35,11 @@ const CARD_META = [
   { icon:TbBuildingCommunity,color:"#6366F1", tag:"Client guide",  stat:"4 steps",    statLabel:"to get started",      bullet:["Role selection guide","Scope & agreement tips","Secure funding flow"] },
   { icon:FiStar,           color:"#10B981", tag:"Community trust",stat:"98%",        statLabel:"satisfaction rate",    bullet:["Verified mutual reviews","Outcome-focused feedback","Reputation building"] },
   { icon:RiTeamLine,       color:"#EC4899", tag:"Talent guide",   stat:"Instant",    statLabel:"matching on post",     bullet:["Profile optimisation tips","Proposal best practices","Secure payout guide"] },
-  { icon:FiBook,           color:"#F59E0B", tag:"Resources",      stat:"Free",       statLabel:"access always",        bullet:["Hiring playbooks","Proposal templates","Escrow & fee guides"] },
+  { icon:FiBook,           color:"#F59E0B", tag:"Resources",      stat:"Free",       statLabel:"access always",        bullet:["Hiring playbooks","Proposal templates","Payment & fee guides"] },
 ]
 
 const TRUST_PILLARS = [
-  { icon:FiShield,         color:"#F97316", title:"Escrow on every gig",        desc:"Funds secured before work begins. Payment releases only when deliverables are approved." },
+  { icon:FiShield,         color:"#F97316", title:"Clear project payments",      desc:"Clients fund agreed projects before work begins. Talent are paid after deliverables are approved." },
   { icon:RiShieldCheckLine,color:"#111111", title:"Verified talent profiles",    desc:"Every freelancer is personally vetted - identity, skills, and sector track record confirmed." },
   { icon:FiZap,            color:"#F97316", title:"Instant matching",            desc:"The moment a gig is posted, our engine surfaces the most relevant talent automatically." },
   { icon:TbHeartHandshake, color:"#111111", title:"Fair pay enforced",           desc:"We set minimum rate floors. 'For the mission' is never a substitute for fair professional pay." },
@@ -47,7 +47,7 @@ const TRUST_PILLARS = [
 
 const STATS = [
   { v:"₦45M+", l:"In gig payments facilitated",    sub:"Across 180+ completed engagements",     color:"#F97316" },
-  { v:"0%",    l:"Unpaid invoices on the platform",sub:"Escrow protects every single gig",        color:"#111111" },
+  { v:"0%",    l:"Unpaid invoices on the platform",sub:"Clear project payments on every gig",     color:"#111111" },
   { v:"98%",   l:"Project satisfaction rate",       sub:"From verified post-gig reviews",         color:"#F97316" },
 ]
 

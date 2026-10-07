@@ -108,7 +108,7 @@ export default function AuthNavbar() {
   const utilityLinks = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/dashboard/messages", label: "Messages", icon: MessageSquare },
-    { href: "/dashboard/wallet", label: "Wallet", icon: Wallet },
+    { href: "/dashboard/wallet", label: "Payments", icon: Wallet },
   ]
 
   const searchType = role === "client" ? "talent" : "job"

@@ -100,8 +100,5 @@ export async function DELETE() {
   response.cookies.set("cw_prefs", "", { ...expired, httpOnly: false })
   response.cookies.set("cw_onboarding", "", { ...expired, httpOnly: false })
   response.cookies.set("cw_usage", "", { ...expired, httpOnly: false })
-  response.cookies.set("pstk_reference", "", { ...expired, httpOnly: false })
-  response.cookies.set("pstk_wallet_reference", "", { ...expired, httpOnly: false })
-  response.cookies.set("pstk_withdraw_reference", "", { ...expired, httpOnly: false })
   return response
 }

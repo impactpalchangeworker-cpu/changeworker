@@ -36,9 +36,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
     }
 
-    // Workspace must be completed to raise a dispute
-    if (workspace.status !== "completed") {
-      return NextResponse.json({ error: "Workspace must be completed before raising a dispute" }, { status: 400 })
+    // A case can be opened once the paid project is active, before final approval and payment.
+    if (!["active", "in_progress", "completed"].includes(String(workspace.status || ""))) {
+      return NextResponse.json({ error: "A dispute can be raised once project work has started" }, { status: 400 })
     }
 
     // Check if dispute already exists
@@ -63,7 +63,12 @@ export async function POST(req: Request) {
 
     await workspaceRef.update({
       disputeStatus: "open",
-      disputeId: disputeRef.id
+      disputeId: disputeRef.id,
+      payment: {
+        ...(workspace.payment || {}),
+        payoutStatus: "paused_for_dispute",
+      },
+      updatedAt: FieldValue.serverTimestamp(),
     })
 
     // Notify the other party

@@ -236,7 +236,7 @@ export default function AboutPage() {
             {[
               { t:"Reduce friction",         b:"From posting to discovery to discussion to delivery - every step is designed to be faster and clearer." },
               { t:"Build real reputation",   b:"Professionals build verified track records through completed gigs. Reputation compounds over time." },
-              { t:"Give organizations confidence", b:"Hiring for project-based work should feel structured, not risky. Escrow and vetting make it that way." },
+              { t:"Give organizations confidence", b:"Hiring for project-based work should feel structured, not risky. Clear agreements, project funding, and vetting make it that way." },
             ].map((item, i) => (
               <div key={i} className={`rounded-2xl border border-white/8 bg-white/4 p-6 ${storyRef.inView?"up":"opacity-0"}`}
                 style={{ "--d":`${.32+i*.08}s` } as React.CSSProperties}>

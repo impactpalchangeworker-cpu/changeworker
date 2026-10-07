@@ -117,7 +117,7 @@ export default async function WorkspaceDetailPage({ params }: PageProps) {
       <AdminPageHeader
         eyebrow="Workspace detail"
         title={buildWorkspaceDisplayTitle(workspace)}
-        description="Inspect delivery, hourly activity, agreement state, funding records, escrow events, payout requests, and submitted work from one admin workspace view."
+        description="Inspect delivery, hourly activity, agreement state, project payment records, payouts, and submitted work from one admin workspace view."
         actions={
           <div className="flex flex-wrap gap-3">
             <Link
@@ -163,15 +163,15 @@ export default async function WorkspaceDetailPage({ params }: PageProps) {
                   <div className="mt-1 text-gray-900">{workspace.payment?.status || "not funded"}</div>
                 </div>
                 <div>
-                  <div className="font-semibold text-gray-500">Escrow amount</div>
+                  <div className="font-semibold text-gray-500">Project payment</div>
                   <div className="mt-1 text-gray-900">
                     {formatAdminMoney(workspace.payment?.amount || paymentVolume)}
                   </div>
                 </div>
                 <div>
-                  <div className="font-semibold text-gray-500">Escrow held</div>
+                  <div className="font-semibold text-gray-500">Payment status</div>
                   <div className="mt-1 text-gray-900">
-                    {workspace.payment?.escrow === false ? "Released" : "Held"}
+                    {workspace.payment?.payoutStatus || workspace.payment?.status || "Not started"}
                   </div>
                 </div>
                 <div>
@@ -195,7 +195,7 @@ export default async function WorkspaceDetailPage({ params }: PageProps) {
 
           <Card className="rounded-[1.75rem] border-0 shadow-sm">
             <CardHeader>
-              <CardTitle className="text-base font-extrabold">Funding and escrow history</CardTitle>
+              <CardTitle className="text-base font-extrabold">Project payment history</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {workspace.payments.length === 0 ? (
@@ -223,7 +223,7 @@ export default async function WorkspaceDetailPage({ params }: PageProps) {
                       <div>
                         <div className="font-semibold text-gray-500">Provider</div>
                         <div className="mt-1 text-gray-900">
-                          {payment.provider || payment.gateway || "Paystack"}
+                          {payment.provider || payment.gateway || "Monnify"}
                         </div>
                       </div>
                     </div>
@@ -233,7 +233,7 @@ export default async function WorkspaceDetailPage({ params }: PageProps) {
 
               {workspace.escrowLedger.length ? (
                 <div className="space-y-3">
-                  <div className="text-sm font-extrabold text-gray-900">Escrow ledger</div>
+                  <div className="text-sm font-extrabold text-gray-900">Payment activity</div>
                   {workspace.escrowLedger.map((entry: any) => (
                     <div key={entry.id} className="rounded-2xl border bg-[var(--secondary)] p-4">
                       <div className="flex flex-wrap items-center justify-between gap-3">

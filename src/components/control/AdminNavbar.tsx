@@ -7,7 +7,7 @@ import toast from "react-hot-toast"
 import {
   AlertTriangle, BarChart3, Bell, Briefcase, Building2, ChevronRight, FileSearch,
   FolderKanban, HandCoins, LayoutGrid, LifeBuoy, LogOut, Menu, MessageSquare,
-  ShieldCheck, Star, UserRoundCheck, Users, Wallet, X,
+  ShieldCheck, Star, UserRoundCheck, Users, X,
 } from "lucide-react"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
@@ -42,7 +42,6 @@ const navGroups: NavGroup[] = [
   { label: "Finance", items: [
     { href: "/control/transactions", label: "Transactions", icon: HandCoins },
     { href: "/control/payment-reconciliation", label: "Payment reconciliation", icon: ShieldCheck },
-    { href: "/control/wallets", label: "Wallets", icon: Wallet },
   ] },
 ]
 

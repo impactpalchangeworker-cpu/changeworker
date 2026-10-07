@@ -314,12 +314,12 @@ export default function TermsPage() {
               <Div/>
 
               {/* 6 */}
-              <SHead id="payments" num="06" icon={FiDollarSign} title="Payments, Fees & Escrow"/>
+              <SHead id="payments" num="06" icon={FiDollarSign} title="Payments & Fees"/>
               <SH>6.1 Platform Fee</SH>
               <P>changeworker charges a <strong>flat 10% platform fee</strong> deducted from the talent's payout on completed gigs. Organizations pay exactly the agreed gig rate - no markup, no surcharge added on their side.</P>
               <Hl color="orange">Example: If a gig is agreed at ₦100,000, the talent receives ₦90,000 and changeworker retains ₦10,000. The organization pays ₦100,000.</Hl>
               <SH>6.2 Payment Processing</SH>
-              <P>All payments are processed through <strong>Paystack</strong>. By using the platform you agree to Paystack's terms of service. changeworker does not store full card details. Funds are held in the platform payment flow and released upon approved delivery.</P>
+              <P>Payments are processed through our payment provider. By using the platform, you agree to the applicable payment-provider terms. changeworker does not store full card details. Talent payment follows approved delivery under the relevant project agreement.</P>
               <SH>6.3 Disputes & Refunds</SH>
               <P>Refunds are not automatically issued. If an organization believes work was not delivered to the agreed standard, they should raise a formal dispute through the workspace. changeworker may review the available records and help the parties move toward an appropriate resolution.</P>
               <SH>6.4 Currency & Taxes</SH>
@@ -370,7 +370,7 @@ export default function TermsPage() {
               <SH>12.2 By changeworker</SH>
               <P>We may suspend or permanently terminate your account, with or without notice, if you violate these Terms, provide false information, engage in fraudulent activity, circumvent platform commission, or create an unsafe environment for other users.</P>
               <SH>12.3 Effect of Termination</SH>
-              <P>Upon termination, your right to access the platform ceases immediately. Funds in escrow for active gigs will be handled according to the dispute resolution process.</P>
+              <P>Upon termination, your right to access the platform ceases immediately. Payment matters relating to active gigs will be handled according to the dispute resolution process.</P>
               <Div/>
 
               {/* 13 */}

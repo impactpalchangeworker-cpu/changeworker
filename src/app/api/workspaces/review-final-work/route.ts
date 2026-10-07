@@ -36,6 +36,9 @@ export async function POST(req: Request) {
     if (workspace.clientUid !== userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
     }
+    if (workspace.disputeId || ["open", "under_review"].includes(String(workspace.disputeStatus || ""))) {
+      return NextResponse.json({ error: "Final approval is paused while a dispute is active" }, { status: 409 })
+    }
 
     // Update final work approval
     const finalWorkRef = workspaceRef.collection("finalWork").doc("submission")
@@ -83,7 +86,7 @@ export async function POST(req: Request) {
       type: "admin:workspace",
       title: `Final work ${status}`,
       message: `${context?.clientName || "Client"} ${status} final work in ${context?.gigTitle || "a workspace"} with ${context?.talentName || "the talent"}.`,
-      link: `/admin/workspaces/${workspaceId}`,
+        link: `/control/workspaces/${workspaceId}`,
     })
 
     return NextResponse.json({ success: true })

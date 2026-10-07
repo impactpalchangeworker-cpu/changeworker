@@ -19,11 +19,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    const { platformFeePercent, commercialNote, templateNotes } = await req.json()
-    const fee = Number(platformFeePercent || 0)
-    if (!Number.isFinite(fee) || fee < 0 || fee > 100) {
-      return NextResponse.json({ error: "Platform fee must be between 0 and 100" }, { status: 400 })
-    }
+    const { commercialNote, templateNotes } = await req.json()
+    const fee = 10
 
     await db.collection("adminSettings").doc("platform").set(
       {

@@ -71,6 +71,7 @@ export default function AdminTalentDetailPage() {
   const uid = params.uid as string
 
   const [profile, setProfile] = useState<TalentProfile | null>(null)
+  const [payoutAccount, setPayoutAccount] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -92,6 +93,8 @@ export default function AdminTalentDetailPage() {
 
         const userRef = doc(db, "users", resolvedUid)
         const userSnap = await getDoc(userRef)
+        const payoutSnap = await getDoc(doc(db, "payoutProfiles", resolvedUid))
+        setPayoutAccount(payoutSnap.exists() ? payoutSnap.data()?.bank || null : null)
 
         if (profileSnap.exists()) {
           const profileData = profileSnap.data() as any
@@ -445,6 +448,14 @@ export default function AdminTalentDetailPage() {
                       {profile.sdgTags?.length ? profile.sdgTags.map((sdg) => <Badge key={sdg} variant="secondary" className="max-w-full whitespace-normal text-xs">{sdg}</Badge>) : <p className="text-sm text-gray-500">No SDG focus areas selected yet.</p>}
                     </div>
                   </div>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl">
+                <CardHeader><CardTitle className="text-lg font-extrabold">Payment arrangement</CardTitle></CardHeader>
+                <CardContent className="text-sm text-gray-700">
+                  {payoutAccount ? <><p className="font-semibold text-emerald-700">Verified direct-payment account</p><p className="mt-2">{payoutAccount.accountName} · {payoutAccount.accountNumber} · {payoutAccount.bankName}</p></> : <p>No verified payout account. The talent must verify a bank account before approved project payments can be sent.</p>}
+                  <p className="mt-3 text-xs text-gray-500">Talent payments are sent directly after final delivery approval. Platform fee: 10%.</p>
                 </CardContent>
               </Card>
 
