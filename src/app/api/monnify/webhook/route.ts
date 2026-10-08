@@ -30,8 +30,8 @@ export async function POST(req: Request) {
         if (verified.paymentStatus === "PAID" && amountPaid >= Number(payment.amount || 0)) {
           let didConfirm = false
           await db.runTransaction(async (tx: admin.firestore.Transaction) => {
-            const latestPayment = await tx.get(paymentRef)
-            if ((latestPayment as admin.firestore.DocumentSnapshot).data()?.status === "funded") return
+            const latestPayment = await tx.get(paymentRef as unknown as admin.firestore.DocumentReference)
+            if (latestPayment.data()?.status === "funded") return
             didConfirm = true
             tx.set(paymentRef, { status: "funded", paidAt: admin.firestore.FieldValue.serverTimestamp(), monnifyTransactionReference: verified.transactionReference || data.transactionReference || null, paymentMethod: verified.paymentMethod || data.paymentMethod || null, updatedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true })
             tx.set(workspaceRef, { payment: { status: "funded", amount: Number(payment.amount || amountPaid), reference, provider: "monnify", fundedAt: admin.firestore.FieldValue.serverTimestamp() }, status: "active", updatedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true })

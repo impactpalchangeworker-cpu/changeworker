@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
   try {
     await requireAdmin(request)
     const snap = await getAdminDb().collection("paymentReconciliationCases").get()
-    const cases = snap.docs.map((item) => ({ id: item.id, ...item.data() })).filter((item: any) => item.provider === "monnify" || item.kind === "project_payment").sort((a: any, b: any) => Number(b.updatedAt?.toMillis?.() || 0) - Number(a.updatedAt?.toMillis?.() || 0))
+    const cases = snap.docs.map((item: admin.firestore.QueryDocumentSnapshot) => ({ id: item.id, ...item.data() })).filter((item: any) => item.provider === "monnify" || item.kind === "project_payment").sort((a: any, b: any) => Number(b.updatedAt?.toMillis?.() || 0) - Number(a.updatedAt?.toMillis?.() || 0))
     return NextResponse.json({ cases })
   } catch (error: any) {
     return NextResponse.json({ error: error?.message || "Failed to load reconciliation cases" }, { status: error?.message === "Unauthorized" ? 401 : error?.message === "Forbidden" ? 403 : 500 })
@@ -46,8 +46,9 @@ export async function POST(request: NextRequest) {
 
     const workspaceRef = db.collection("workspaces").doc(workspaceId)
     const paymentRef = workspaceRef.collection("payments").doc(reference)
-    await db.runTransaction(async (tx) => {
-      const [workspaceSnap, paymentSnap] = await Promise.all([tx.get(workspaceRef), tx.get(paymentRef)])
+    await db.runTransaction(async (tx: admin.firestore.Transaction) => {
+      const workspaceSnap = await tx.get(workspaceRef as admin.firestore.DocumentReference) as admin.firestore.DocumentSnapshot
+      const paymentSnap = await tx.get(paymentRef as admin.firestore.DocumentReference) as admin.firestore.DocumentSnapshot
       if (!workspaceSnap.exists || !paymentSnap.exists) throw new Error("Project payment record not found")
       const payment = paymentSnap.data() as any
       if (payment.status !== "funded") {
