@@ -9,7 +9,10 @@ export const runtime = "nodejs"
 export async function POST(req: Request) {
   const rawBody = Buffer.from(await req.arrayBuffer())
   const signature = req.headers.get("monnify-signature") || ""
-  if (process.env.NODE_ENV === "production" && !hasValidMonnifySignature(rawBody, signature)) {
+  // Sandbox callbacks do not include a signature. Live callbacks must always
+  // validate against the exact raw body before any payment state is changed.
+  const isSandbox = (process.env.MONNIFY_BASE_URL || "").includes("sandbox.monnify.com")
+  if (!isSandbox && !hasValidMonnifySignature(rawBody, signature)) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 })
   }
   try {

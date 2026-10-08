@@ -152,7 +152,9 @@ export async function initiateMonnifyRefund(input: {
 export function hasValidMonnifySignature(rawBody: Buffer, signature: string) {
   const secretKey = process.env.MONNIFY_SECRET_KEY
   if (!secretKey || !signature) return false
-  const expected = crypto.createHmac("sha512", secretKey).update(rawBody).digest("hex")
+  // Monnify signs webhooks by hashing the client secret followed by the exact
+  // raw request body. Do not parse and re-stringify the payload before checking.
+  const expected = crypto.createHash("sha512").update(secretKey).update(rawBody).digest("hex")
   try {
     return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature))
   } catch {
