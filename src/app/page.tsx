@@ -82,7 +82,7 @@ const CTA_IMG = "/images/6.jpeg?auto=compress&cs=tinysrgb&w=1200"
 
 const FEATURES = [
   { icon: FiZap, title: "Instant matching", body: "Post a gig and our engine immediately surfaces the most relevant vetted talent. No waiting, no manual delay.", num: "01" },
-  { icon: FiShield, title: "Clear project payments", body: "Clients fund the workspace before work begins. Talent receive work earnings after final deliverables are approved. We do not hold payments in wallets.", num: "02" },
+  { icon: FiShield, title: "Clear project payments", body: "Clients fund the workspace before work begins. When a client confirms completed work, the talent's payout is released immediately. We do not hold payments in wallets.", num: "02" },
   { icon: FiCheckCircle, title: "Verified talent only", body: "Every freelancer is personally vetted - identity, skills, and sector track record confirmed before appearing.", num: "03" },
   { icon: TbBuildingCommunity, title: "Nigeria-native", body: "Naira pricing, local payment processing, and a team that deeply understands Nigerian civil society.", num: "04" },
   { icon: FiRepeat, title: "Save & rehire", body: "Bookmark talent you love and return to them for future gigs without starting a new search.", num: "05" },
@@ -109,14 +109,14 @@ const STEPS_ORG = [
   { icon: FiEdit3, num: "01", label: "Post a gig", desc: "Describe the work, set your budget, tag relevant SDGs - done in 5 minutes." },
   { icon: FiZap, num: "02", label: "Get matched", desc: "Instant matching surfaces vetted talent the moment your gig goes live." },
   { icon: FiUsers, num: "03", label: "Choose & agree", desc: "Review profiles, discuss scope, agree on terms inside the platform." },
-  { icon: FiCheckCircle, num: "04", label: "Deliver & complete", desc: "Work is delivered through the workspace. Approve final deliverables and the talent receives their work earnings." },
+  { icon: FiCheckCircle, num: "04", label: "Deliver & complete", desc: "Work is delivered through the workspace. Confirm completed work and the talent's payout is released immediately." },
 ]
 
 const STEPS_FL = [
   { icon: FiLayers, num: "01", label: "Build your profile", desc: "Showcase skills, SDG focus, sector experience, and your portfolio." },
   { icon: FiBell, num: "02", label: "Get auto-matched", desc: "Relevant gigs surface to you the moment they're posted. No bidding." },
   { icon: FiMessageSquare, num: "03", label: "Discuss & start", desc: "The client funds the workspace. You begin work with a clear payment process in place." },
-  { icon: FiTrendingUp, num: "04", label: "Deliver & earn", desc: "Submit work, get approved, receive your work earnings. Build your reputation." },
+  { icon: FiTrendingUp, num: "04", label: "Deliver & earn", desc: "Submit completed work, receive payout when the client confirms it, and build your reputation." },
 ]
 
 /* ═══ PRELOADER ══════════════════════════════════════════════ */
@@ -713,7 +713,7 @@ Pay for what you need. Get work that counts.                </p>
                   <FiShield size={18} style={{ color: "#F97316" }} />
                 </div>
                 <h3 className="font-bold text-[#111] text-sm mb-2" style={{ fontFamily: "'Plus Jakarta Sans',sans-serif" }}>Clear project payments</h3>
-                <p className="bd text-sm">Clients fund the workspace before work begins. Talent receive work earnings after final deliverables are approved. changeworker does not hold payments in wallets for organizations or talent; payments are direct.</p>
+                <p className="bd text-sm">Clients fund the workspace before work begins. When a client confirms completed work, the talent's payout is released immediately. changeworker does not hold payments in wallets for organizations or talent; payments are direct.</p>
               </div>
 
               <div className={`card p-6 ${featRef.inView ? "up" : "opacity-0"}`} style={{ "--d": ".22s" } as React.CSSProperties}>

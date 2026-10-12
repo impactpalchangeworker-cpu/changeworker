@@ -36,14 +36,14 @@ const CLIENT_STEPS = [
   { num:"01", icon: FiEdit3,       title: "Post your gig",       body: "Write a brief with scope, budget, SDG focus, and skills needed. Takes about 5 minutes. The clearer your brief, the better the talent you attract." },
   { num:"02", icon: FiZap,         title: "Get matched instantly",body: "The moment your gig goes live our engine surfaces the most relevant vetted talent. Browse profiles and incoming proposals - no waiting period." },
   { num:"03", icon: FiMessageSquare,title:"Discuss & agree",      body: "Message talent, align on expectations, and finalise scope inside the workspace. Fund the workspace once you're both ready to begin." },
-  { num:"04", icon: FiCheckCircle, title: "Review & complete",    body: "Talent submits deliverables through the workspace. Review, request changes if needed, and approve when satisfied. The talent then receives their work earnings." },
+  { num:"04", icon: FiCheckCircle, title: "Review & complete",    body: "Talent submits completed work through the workspace. Review, request changes if needed, and confirm when satisfied. The talent's payout is then released immediately." },
 ]
 
 const TALENT_STEPS = [
   { num:"01", icon: FiLayers,      title: "Build your profile",   body: "Add your skills, sector experience, SDG focus areas, rates, and portfolio. A complete profile is the most important thing you can do to get matched." },
   { num:"02", icon: FiBell,        title: "Get auto-matched",     body: "When a relevant gig is posted, you appear in the client's shortlist automatically. No bidding wars, no cold pitching. You focus on the work." },
   { num:"03", icon: FiUsers,       title: "Discuss & start",      body: "The client reaches out, you discuss scope, and once agreed the client funds the workspace. You start work with a clear payment process in place." },
-  { num:"04", icon: FiTrendingUp,  title: "Deliver & earn",       body: "Submit work through the workspace. Once the client approves, you receive your work earnings. Every completed gig builds your rating and reputation." },
+  { num:"04", icon: FiTrendingUp,  title: "Deliver & earn",       body: "Submit completed work through the workspace. Once the client confirms it, your payout is released immediately. Every completed gig builds your rating and reputation." },
 ]
 
 const TRUST_POINTS = [

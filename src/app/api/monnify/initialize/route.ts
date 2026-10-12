@@ -40,7 +40,10 @@ export async function POST(req: Request) {
     await workspaceRef.collection("payments").doc(reference).set({
       reference, amount, currency: "NGN", status: "initiated", provider: "monnify", createdAt: admin.firestore.FieldValue.serverTimestamp(), updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     })
-    const appUrl = (process.env.NEXT_PUBLIC_APP_URL || "").replace(/\/$/, "")
+    const configuredAppUrl = (process.env.NEXT_PUBLIC_APP_URL || "https://www.changeworker.ng").replace(/\/$/, "")
+    // The apex domain redirects to www on Vercel. Send Monnify straight to the
+    // canonical host so Firebase's browser session remains on the same origin.
+    const appUrl = configuredAppUrl === "https://changeworker.ng" ? "https://www.changeworker.ng" : configuredAppUrl
     const result = await initializeMonnifyTransaction({
       amount, customerEmail: email, customerName: String(user?.fullName || user?.displayName || "Changeworker client"), reference,
       description: `Project payment for ${workspace.gigTitle || "Changeworker workspace"}`,

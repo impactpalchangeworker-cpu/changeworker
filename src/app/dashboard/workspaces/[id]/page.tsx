@@ -3,7 +3,7 @@
 export const dynamic = "force-dynamic"
 
 import { useEffect, useMemo, useState, useRef } from "react"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import RequireAuth from "@/components/auth/RequireAuth"
 import AuthNavbar from "@/components/layout/AuthNavbar"
 import { useAuth } from "@/context/AuthContext"
@@ -838,6 +838,7 @@ function PreviewImage(props: Parameters<typeof PreviewItem>[0]) {
 
 export default function WorkspaceDetailsPage() {
   const { user } = useAuth()
+  const searchParams = useSearchParams()
   const params = useParams<{ id: string }>()
   const id = params?.id
   const router = useRouter()
@@ -910,6 +911,7 @@ export default function WorkspaceDetailsPage() {
   // Collapsible sections
   const [expandedSubmissions, setExpandedSubmissions] = useState<Set<number>>(new Set())
   const [expandedPayouts, setExpandedPayouts] = useState<Set<string>>(new Set())
+  const paymentReturnHandled = useRef(false)
 
   const isClient = useMemo(() => !!user?.uid && user.uid === ws?.clientUid, [user?.uid, ws?.clientUid])
   const isTalent = useMemo(() => !!user?.uid && user.uid === ws?.talentUid, [user?.uid, ws?.talentUid])
@@ -952,6 +954,33 @@ export default function WorkspaceDetailsPage() {
   
   // Check-in is enabled during 50-min window and grace period (not dependent on session status)
   const canSubmitCheckin = payType === "hourly" && (elapsedSeconds >= 3000 || graceWindowActive)
+
+  // A payment return is a fallback confirmation path when a provider webhook
+  // is delayed. The server still verifies the transaction and amount directly.
+  useEffect(() => {
+    if (searchParams.get("payment") !== "processing" || paymentReturnHandled.current || !id || !user?.uid || !ws) return
+    if (ws.clientUid !== user.uid) return
+    paymentReturnHandled.current = true
+
+    ;(async () => {
+      try {
+        const token = await user.getIdToken()
+        const response = await fetch("/api/monnify/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ workspaceId: id }),
+        })
+        const result = await response.json()
+        if (!response.ok) throw new Error(result.error || "Unable to verify project payment")
+        if (result.funded) toast.success("Project payment confirmed. Work can now begin.")
+        else toast("Your payment is still being confirmed. This page will update automatically.")
+      } catch (error: any) {
+        toast.error(error?.message || "We could not verify the payment yet. Please refresh shortly.")
+      } finally {
+        router.replace(`/dashboard/workspaces/${id}`)
+      }
+    })()
+  }, [id, router, searchParams, user, ws])
 
   // --- Live subscriptions ---
   useEffect(() => {
@@ -1460,7 +1489,7 @@ const unsubSession = onSnapshot(
       })
       const payoutResult = await payout.json()
       if (!payout.ok) throw new Error(payoutResult?.error || "Final work was approved, but payment could not be started")
-      toast.success(payoutResult.status === "paid" ? "Final work approved and payment sent" : "Final work approved and payment is processing")
+        toast.success(payoutResult.status === "paid" ? "Completed work confirmed and payout sent" : "Completed work confirmed and payout is processing")
       setReviewingFinalWork(false)
     } catch (e: any) {
       console.error(e)
@@ -2012,7 +2041,7 @@ const unsubSession = onSnapshot(
                           </div>
 
                           <div className="mt-2 text-xs text-gray-600">
-                            Fund the agreed project before work begins. Talent payment is processed after final delivery approval.
+                            Fund the agreed project before work begins. When you confirm completed work, the talent's payout is released immediately.
                           </div>
 
                           <button

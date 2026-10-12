@@ -21,12 +21,12 @@ export async function POST(req: Request) {
     const workspaceSnap = await workspaceRef.get()
     if (!workspaceSnap.exists) return NextResponse.json({ error: "Workspace not found" }, { status: 404 })
     const workspace = workspaceSnap.data() as any
-    if (workspace.clientUid !== decoded.uid) return NextResponse.json({ error: "Only the client can confirm final delivery" }, { status: 403 })
+    if (workspace.clientUid !== decoded.uid) return NextResponse.json({ error: "Only the client can confirm completed work" }, { status: 403 })
     if (workspace.disputeId || ["open", "under_review"].includes(String(workspace.disputeStatus || ""))) return NextResponse.json({ error: "Payment is paused while a dispute is active" }, { status: 409 })
     if (workspace.payment?.status !== "funded") return NextResponse.json({ error: "Project payment has not been confirmed" }, { status: 409 })
 
     const finalWork = (await workspaceRef.collection("finalWork").doc("submission").get()).data() as any
-    if (finalWork?.status !== "approved") return NextResponse.json({ error: "Final delivery must be approved before payment" }, { status: 409 })
+    if (finalWork?.status !== "approved") return NextResponse.json({ error: "Completed work must be confirmed before payout" }, { status: 409 })
 
     const existingPayout = await workspaceRef.collection("payouts").where("status", "in", ["processing", "paid", "pending_authorization"]).limit(1).get()
     if (!existingPayout.empty) return NextResponse.json({ error: "A payment is already being processed for this project" }, { status: 409 })
