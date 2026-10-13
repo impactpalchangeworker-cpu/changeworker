@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from "next"
 import { AuthProvider } from "@/context/AuthContext"
 import { SearchProvider } from "@/context/SearchContext"
 import { Toaster } from "react-hot-toast"
-// import PWARegistrar from "@/components/pwa/PWARegistrar"
+import PWARegistrar from "@/components/pwa/PWARegistrar"
 // import PWAInstallPrompt from "@/components/pwa/PWAInstallPrompt"
 import CsrfFetchGuard from "@/components/platform/CsrfFetchGuard"
 import UsageCookieTracker from "@/components/platform/UsageCookieTracker"
@@ -47,7 +47,7 @@ export default function RootLayout({
         />
         <AuthProvider>
           <SearchProvider>
-            {/* <PWARegistrar /> */}
+            <PWARegistrar />
             {/* <PWAInstallPrompt /> */}
             <CookieBootstrap />
             <CookieConsentBanner />

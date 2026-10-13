@@ -15,10 +15,15 @@ export default function PushNotificationsToggle({ enabled = false }: { enabled?:
     if (!auth.currentUser || !("serviceWorker" in navigator) || !("PushManager" in window)) return toast.error("Push notifications are not supported in this browser.")
     setBusy(true)
     try {
-      const token = await auth.currentUser.getIdToken(); const registration = await navigator.serviceWorker.ready
+      const token = await auth.currentUser.getIdToken()
+      const registration = await Promise.race([
+        navigator.serviceWorker.register("/sw.js"),
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error("Push setup timed out. Please refresh and try again.")), 10000)),
+      ])
       if (active) {
         const subscription = await registration.pushManager.getSubscription(); await fetch("/api/notifications/push-subscription", { method: "DELETE", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify({ endpoint: subscription?.endpoint }) }); await subscription?.unsubscribe(); setActive(false); toast.success("Push notifications disabled")
       } else {
+        if (!("Notification" in window)) throw new Error("Notifications are not supported in this browser.")
         if (await Notification.requestPermission() !== "granted") throw new Error("Notification permission was not granted")
         const subscription = await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: decodeKey(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY || "") })
         const response = await fetch("/api/notifications/push-subscription", { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify({ subscription }) }); if (!response.ok) throw new Error((await response.json()).error || "Unable to enable push notifications"); setActive(true); toast.success("Push notifications enabled")
