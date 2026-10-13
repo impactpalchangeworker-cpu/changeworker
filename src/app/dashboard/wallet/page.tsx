@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import RequireAuth from "@/components/auth/RequireAuth"
 import AuthNavbar from "@/components/layout/AuthNavbar"
@@ -121,4 +121,10 @@ function PaymentPage() {
   </div></main></RequireAuth>
 }
 
-export default function WalletPage() { return <PaymentPage /> }
+function WalletLoading() {
+  return <main className="min-h-screen bg-[#f6f7fb] px-4 py-8 sm:px-6 lg:px-10"><div className="mx-auto max-w-6xl space-y-6"><div className="h-32 animate-pulse rounded-[2rem] bg-white" /><div className="grid gap-6 lg:grid-cols-2"><div className="h-64 animate-pulse rounded-[1.75rem] bg-white" /><div className="h-64 animate-pulse rounded-[1.75rem] bg-white" /></div></div></main>
+}
+
+export default function WalletPage() {
+  return <Suspense fallback={<WalletLoading />}><PaymentPage /></Suspense>
+}
