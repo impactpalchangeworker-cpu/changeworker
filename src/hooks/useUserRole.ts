@@ -26,8 +26,9 @@ export function useUserRole() {
       try {
         setLoadingRole(true)
 
-        // ✅ quick cache to avoid re-fetching on every page
-        const cached = window.localStorage.getItem("sm_role")
+        // Cache roles per account so switching users in the same browser cannot leak a role.
+        const cacheKey = `sm_role_${user.uid}`
+        const cached = window.localStorage.getItem(cacheKey)
         if (cached === "talent" || cached === "client") {
           setRole(cached)
           setLoadingRole(false)
@@ -40,7 +41,7 @@ export function useUserRole() {
         if (!alive) return
         if (r === "talent" || r === "client") {
           setRole(r)
-          window.localStorage.setItem("sm_role", r)
+          window.localStorage.setItem(cacheKey, r)
         } else {
           setRole(null)
         }

@@ -60,4 +60,5 @@ export const COOKIE_NAMES = {
   prefs: "cw_prefs",
   onboarding: "cw_onboarding",
   usage: "cw_usage",
+  consent: "cw_cookie_consent",
 } as const

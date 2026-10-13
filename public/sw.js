@@ -22,6 +22,16 @@ self.addEventListener("install", (event) => {
   )
 })
 
+self.addEventListener("push", (event) => {
+  if (!event.data) return
+  const data = event.data.json()
+  event.waitUntil(self.registration.showNotification(data.title || "changeworker", { body: data.message || "You have a new platform notification.", icon: "/logo.png", badge: "/logo.png", data: { link: data.link || "/dashboard/notifications" } }))
+})
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close(); const link = event.notification.data?.link || "/dashboard/notifications"
+  event.waitUntil(clients.matchAll({ type: "window", includeUncontrolled: true }).then((items) => { const existing = items.find((client) => "focus" in client); if (existing) { existing.navigate(link); return existing.focus() }; return clients.openWindow(link) }))
+})
+
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches

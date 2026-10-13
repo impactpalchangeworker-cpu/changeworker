@@ -2,6 +2,7 @@ import { sendNotification } from "./sendNotification"
 import { sendEmail } from "@/lib/email/sendEmail"
 import { getAdminDb } from "@/lib/firebaseAdmin"
 import { buildNotificationEmail } from "./template"
+import { sendPushNotification } from "./push"
 
 export async function notifyUser({
   userId,
@@ -24,6 +25,9 @@ export async function notifyUser({
   } catch (err) {
     console.error("notifyUser: in-app notification error", err)
   }
+
+  try { await sendPushNotification(userId, { title, message, link }) }
+  catch (err) { console.error("notifyUser: push notification error", err) }
 
   try {
     const adminDb = getAdminDb()

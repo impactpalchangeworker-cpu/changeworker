@@ -941,14 +941,11 @@ export default function WorkspaceDetailsPage() {
   const functions = useMemo(() => getFunctions(), [])
 
   const payType = (agreement?.terms?.payType || "fixed") as "fixed" | "hourly"
-  const paymentStatus = ws?.payment?.status || "unfunded"
+  const paymentStatus = String(ws?.payment?.status || "unfunded").trim().toLowerCase()
   const isFunded = paymentStatus === "funded"
-  const canWork =
-    payType === "fixed"
-      ? paymentStatus === "initiated" || paymentStatus === "funded"
-      : paymentStatus === "initiated" || paymentStatus === "funded"
+  const canWork = paymentStatus === "initiated" || paymentStatus === "funded"
 
-  const sessionStatus = hourlySession?.status || "not_started"
+  const sessionStatus = String(hourlySession?.status || "not_started").trim().toLowerCase()
   const hourlyGateLocked = payType === "hourly" && !(sessionStatus === "running" || sessionStatus === "paused")
   const blockWorkActions = payType === "hourly" ? hourlyGateLocked : false
   
@@ -965,10 +962,10 @@ export default function WorkspaceDetailsPage() {
     ;(async () => {
       try {
         const token = await user.getIdToken()
-        const response = await fetch("/api/monnify/verify", {
+        const response = await fetch("/api/paystack/verify", {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-          body: JSON.stringify({ workspaceId: id }),
+          body: JSON.stringify({ workspaceId: id, reference: searchParams.get("reference") || undefined }),
         })
         const result = await response.json()
         if (!response.ok) throw new Error(result.error || "Unable to verify project payment")
@@ -1027,28 +1024,20 @@ export default function WorkspaceDetailsPage() {
       setFinalWork(snap.exists() ? ({ id: "submission", ...(snap.data() as any) }) : null)
     })
 
-const unsubSession = onSnapshot(
-      doc(db, "workspaces", id, "hourly", "session"),
-      (snap) => {
-        setHourlySession(snap.exists() ? (snap.data() as any) : null)
-      },
-      (error) => {
-        console.error("Error listening to hourly session:", error)
-        setHourlySession(null)
-      }
-    )
-
-    const unsubCheckins = onSnapshot(
-      query(
-        collection(db, "workspaces", id, "hourly", "session", "checkins"),
-        orderBy("submittedAt", "desc")
-      ),
-      (snap) => setHourlyCheckins(snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) }))),
-      (error) => {
-        console.error("Error listening to hourly checkins:", error)
-        setHourlyCheckins([])
-      }
-)
+    let unsubSession = () => {}
+    let unsubCheckins = () => {}
+    if (payType === "hourly") {
+      unsubSession = onSnapshot(
+        doc(db, "workspaces", id, "hourly", "session"),
+        (snap) => setHourlySession(snap.exists() ? (snap.data() as any) : null),
+        () => setHourlySession(null)
+      )
+      unsubCheckins = onSnapshot(
+        query(collection(db, "workspaces", id, "hourly", "session", "checkins"), orderBy("submittedAt", "desc")),
+        (snap) => setHourlyCheckins(snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) }))),
+        () => setHourlyCheckins([])
+      )
+    }
 
 
     return () => {
@@ -1059,7 +1048,7 @@ const unsubSession = onSnapshot(
       unsubSession()
       unsubCheckins()
     }
-  }, [id, user?.uid])
+  }, [id, user?.uid, payType])
 
   // ✅ Check if user already reviewed
   useEffect(() => {
@@ -1267,14 +1256,14 @@ const unsubSession = onSnapshot(
       const currentUser = firebaseAuth.currentUser
       if (!currentUser) throw new Error("Not signed in")
       const token = await currentUser.getIdToken()
-      const resp = await fetch("/api/monnify/initialize", {
+      const resp = await fetch("/api/paystack/initialize", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ wsId: id }),
       })
       const json = await resp.json()
       if (!resp.ok) throw new Error(json?.error || "Failed to initialize payment")
-      window.location.href = json.checkoutUrl
+      window.location.href = json.authorizationUrl
     } catch (e: any) {
       console.error(e)
       toast.error(e?.message || "Payment failed")
@@ -1484,7 +1473,7 @@ const unsubSession = onSnapshot(
       })
       const reviewResult = await review.json()
       if (!review.ok) throw new Error(reviewResult?.error || "Unable to approve final work")
-      const payout = await fetch("/api/monnify/payout", {
+        const payout = await fetch("/api/paystack/payout", {
         method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }, body: JSON.stringify({ workspaceId: id }),
       })
       const payoutResult = await payout.json()

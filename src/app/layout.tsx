@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast"
 import CsrfFetchGuard from "@/components/platform/CsrfFetchGuard"
 import UsageCookieTracker from "@/components/platform/UsageCookieTracker"
 import CookieBootstrap from "@/components/platform/CookieBootstrap"
+import CookieConsentBanner from "@/components/platform/CookieConsentBanner"
 
 export const metadata: Metadata = {
   title: "changeworker",
@@ -49,6 +50,7 @@ export default function RootLayout({
             {/* <PWARegistrar /> */}
             {/* <PWAInstallPrompt /> */}
             <CookieBootstrap />
+            <CookieConsentBanner />
             <CsrfFetchGuard />
             <UsageCookieTracker />
             <div className="min-h-screen flex flex-col">

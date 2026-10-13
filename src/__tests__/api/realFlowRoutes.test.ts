@@ -71,7 +71,7 @@ function jsonRequest(body: any, token = "valid-token") {
       },
     },
     json: async () => body,
-  }
+  } as unknown as Request
 }
 
 function makeDocRef({

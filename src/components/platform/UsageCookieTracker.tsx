@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import { usePathname } from "next/navigation"
-import { COOKIE_NAMES, getJsonCookie, setJsonCookie } from "@/lib/cookies"
+import { COOKIE_NAMES, getCookie, getJsonCookie, setJsonCookie } from "@/lib/cookies"
 
 type UsageCookie = {
   lastPath?: string
@@ -15,6 +15,7 @@ export default function UsageCookieTracker() {
 
   useEffect(() => {
     if (!pathname) return
+    if (getCookie(COOKIE_NAMES.consent) !== "accepted") return
     const prev = getJsonCookie<UsageCookie>(COOKIE_NAMES.usage, {})
     setJsonCookie(
       COOKIE_NAMES.usage,

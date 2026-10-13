@@ -16,13 +16,23 @@ export default function CookieBootstrap() {
       setCookie(COOKIE_NAMES.csrf, makeToken(), { maxAge: 60 * 60 * 3 })
     }
 
-    if (!getCookie(COOKIE_NAMES.prefs)) {
+    const consent = getCookie(COOKIE_NAMES.consent)
+    if (consent === "accepted" && !getCookie(COOKIE_NAMES.prefs)) {
       setJsonCookie(
         COOKIE_NAMES.prefs,
         { searchType: "talent", density: "comfortable", updatedAt: Date.now() },
         { maxAge: 60 * 60 * 24 * 365 }
       )
     }
+
+    const onConsent = (event: Event) => {
+      if ((event as CustomEvent).detail !== "accepted") return
+      if (!getCookie(COOKIE_NAMES.prefs)) {
+        setJsonCookie(COOKIE_NAMES.prefs, { searchType: "talent", density: "comfortable", updatedAt: Date.now() }, { maxAge: 60 * 60 * 24 * 365 })
+      }
+    }
+    window.addEventListener("cw-cookie-consent", onConsent)
+    return () => window.removeEventListener("cw-cookie-consent", onConsent)
   }, [])
 
   return null

@@ -15,6 +15,7 @@ const RULES: RateRule[] = [
   { prefix: "/api/admin/disputes/resolve", limit: 10, windowMs: 60_000 },
   { prefix: "/api/admin", limit: 30, windowMs: 60_000 },
   { prefix: "/api/monnify", limit: 20, windowMs: 60_000 },
+  { prefix: "/api/paystack", limit: 20, windowMs: 60_000 },
   { prefix: "/api/disputes/upload-evidence", limit: 8, windowMs: 60_000 },
   { prefix: "/api/disputes/send-message", limit: 20, windowMs: 60_000 },
   { prefix: "/api/disputes/create", limit: 8, windowMs: 60_000 },
@@ -66,6 +67,7 @@ export function middleware(request: NextRequest) {
     "/api/auth/send-password-reset",
     "/api/auth/send-verification",
     "/api/monnify/webhook",
+    "/api/paystack/webhook",
     "/api/test-firebase",
   ]
   const unsafeMethod = !["GET", "HEAD"].includes(request.method.toUpperCase())

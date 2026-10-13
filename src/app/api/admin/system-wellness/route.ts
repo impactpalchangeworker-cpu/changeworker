@@ -90,6 +90,15 @@ export async function GET(req: NextRequest) {
     }
 
     checks.push({
+      key: "paystack_env",
+      label: "Paystack configuration",
+      status: process.env.PAYSTACK_SECRET_KEY ? "ok" : "warning",
+      detail: process.env.PAYSTACK_SECRET_KEY
+        ? "Paystack credentials are configured for the active provider."
+        : "PAYSTACK_SECRET_KEY is not configured in this environment.",
+    })
+
+    checks.push({
       key: "monnify_env",
       label: "Monnify configuration",
       status: process.env.MONNIFY_API_KEY && process.env.MONNIFY_SECRET_KEY && process.env.MONNIFY_CONTRACT_CODE ? "ok" : "warning",
