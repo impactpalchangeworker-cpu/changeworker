@@ -13,10 +13,12 @@ export default function PushNotificationsToggle({ enabled = false }: { enabled?:
   const [installPrompt, setInstallPrompt] = useState<any>(null)
   const [showHelp, setShowHelp] = useState(false)
   const [isIos, setIsIos] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   useEffect(() => { setActive(enabled); if (auth.currentUser) void getDoc(doc(db, "users", auth.currentUser.uid)).then((snap) => setActive(Boolean(snap.data()?.pushNotificationsEnabled))) }, [enabled])
   useEffect(() => {
     const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
     setIsIos(ios)
+    setIsMobile(ios || /Android|Mobile/i.test(navigator.userAgent))
     const onInstall = (event: Event) => { event.preventDefault(); setInstallPrompt(event) }
     window.addEventListener("beforeinstallprompt", onInstall)
     return () => window.removeEventListener("beforeinstallprompt", onInstall)
@@ -62,7 +64,7 @@ export default function PushNotificationsToggle({ enabled = false }: { enabled?:
       <button type="button" onClick={() => setShowHelp((value) => !value)} className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 hover:bg-gray-50">{showHelp ? "Hide setup steps" : "How to receive alerts"}</button>
     </div>
     {showHelp && <div className="mt-3 space-y-2 rounded-xl bg-gray-50 p-3 text-xs leading-5 text-gray-600">
-      {isIos ? <p><strong className="text-gray-900">iPhone:</strong> Open changeworker in Safari, tap Share, choose <strong>Add to Home Screen</strong>, open the installed app, then enable notifications here and allow the notification prompt.</p> : <p><strong className="text-gray-900">Android:</strong> In Chrome, tap the three dots, choose <strong>Install app</strong> or <strong>Add to Home screen</strong>, then enable notifications here and allow Chrome notifications in your phone settings.</p>}
+      {isIos ? <p><strong className="text-gray-900">iPhone:</strong> Open changeworker in Safari, tap Share, choose <strong>Add to Home Screen</strong>, open the installed app, then enable notifications here and allow the notification prompt.</p> : isMobile ? <p><strong className="text-gray-900">Android:</strong> In Chrome, tap the three dots, choose <strong>Install app</strong> or <strong>Add to Home screen</strong>, then enable notifications here and allow Chrome notifications in your phone settings.</p> : <p><strong className="text-gray-900">Laptop:</strong> In Chrome or Edge, allow notifications when prompted from changeworker. You can keep the browser closed and still receive alerts if browser notifications and background activity are allowed. On Safari for macOS, allow notifications in Safari settings and macOS System Settings.</p>}
       <p>If alerts are delayed, check that notifications are enabled for Chrome or the installed app, and disable battery restrictions for it.</p>
     </div>}
   </div>
