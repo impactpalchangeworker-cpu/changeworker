@@ -3,7 +3,7 @@
   "private": true,
   "main": "lib/index.js",
   "engines": {
-    "node": "20"
+    "node": "24"
   },
   "scripts": {
   "build": "tsc",
@@ -17,7 +17,7 @@
     "axios": "^1.6.5"
   },
   "devDependencies": {
-    "@types/node": "^20.11.30",
+    "@types/node": "^24",
     "typescript": "^5.4.5"
   }
 }
